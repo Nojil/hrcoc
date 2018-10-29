@@ -1,0 +1,12 @@
+.menu-title-column {
+  white-space: normal;
+}
+
+.menu-title-column h3 {
+  border-bottom: 1px solid #f3f3f3f3;
+}
+
+.inner-nav .mega-menu .sub-menu .mega-menu-col>a {
+  pointer-events: all;
+  cursor: pointer;
+}

@@ -1,0 +1,326 @@
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" routerLink="#">Navbar</a>
+    <button class="navbar-toggler" type="button" (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="" routerLinkActive="active-link">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/about" routerLinkActive="active-link">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/bibleClasses" routerLinkActive="active-link">Bible Classes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/bibleStudy" routerLinkActive="active-link">Bible Studies</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/sermons" routerLinkActive="active-link">Sermons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/prayerRequests" routerLinkActive="active-link">Prayer Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/lamb" routerLinkActive="active-link">L.A.M.B</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/contact" routerLinkActive="active-link">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav> -->
+
+<header class="header header-center">
+  <div class="container-fluid">
+    <div class="inner-header">
+      <a class="inner-brand" routerLink="/" routerLinkActive="active-link">
+        <img class="brand-light" src="" width="77px" alt="">
+      </a>
+    </div>
+    <!-- Navigation-->
+    <div class="inner-navigation collapse">
+      <div class="inner-navigation-inline">
+        <div class="inner-nav">
+          <ul>
+            <!-- First Time-->
+            <li class="menu-item-has-children menu-item-has-mega-menu">
+              <a routerLink="/" routerLinkActive="active-link">First Time</a>
+            </li>
+            <!-- First Time end-->
+            <!-- Family-->
+            <li class="menu-item-has-children menu-item-has-mega-menu">
+              <a routerLink="/family" routerLinkActive="active-link">Family</a>
+              <div class="mega-menu" style="margin-left: 0px;">
+                <ul class="sub-menu mega-menu-row">
+                  <!-- Column 1-->
+                  <li class="menu-item-has-children mega-menu-col m-4">
+                    <div class="row">
+                      <div class="col-md-12 menu-title-column">
+                        <h3 class="pb-3">One Body In Christ</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus nisi quis velit feugiat
+                          suscipit.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Column 2-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/family/adults">For adults</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/family/adults/weeklyBibleStudies" routerLinkActive="active-link">Weekly Bible Studies</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/adults/sundayBibleStudy" routerLinkActive="active-link">Sunday Bible Study</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/adults/mensGroup" routerLinkActive="active-link">Mens group</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/adults/womansGroup" routerLinkActive="active-link">Womans Group</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 3-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="family/kids">For kids</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/family/kids/vbs">Vacation Bible School</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/kids/sundayBibleClass">Sunday Bible Class</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/kids/youthGroup">Youth Group</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/kids/youthOutreach">Youth Outreach</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 4-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="family/everyone">For Everyone</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/family/everyone/weeklyBibleStudies">Weekly Bible Studies</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/everyone/communityOutreach">Community Outreach</a>
+                      </li>
+                      <li>
+                        <a routerLink="/family/everyone/monthlyPotluck">Monthly Potluck</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- Family end-->
+            <!-- Grow In Christ-->
+            <li class="menu-item-has-children menu-item-has-mega-menu">
+              <a routerLink="/grow">Grow In Christ</a>
+              <div class="mega-menu" style="margin-left: 0px;">
+                <ul class="sub-menu mega-menu-row">
+                  <!-- Column 1-->
+                  <li class="menu-item-has-children mega-menu-col m-4">
+                    <div class="row">
+                      <div class="col-md-12 menu-title-column">
+                        <h3 class="pb-3">Hand In Hand</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus nisi quis velit feugiat
+                          suscipit.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Column 2-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/grow/baptism">Baptism</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/grow/baptism/howToBeSaved">How to be saved</a>
+                      </li>
+                      <li>
+                        <a routerLink="/grow/baptism/biblicalBaptism">Biblical Baptism</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 3-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/grow/communion">Communion</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/grow/communion/weeklyCommunion">Weekly Communion</a>
+                      </li>
+                      <li>
+                        <a routerLink="/grow/communion/biblicalCommunion">Biblical Communion</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 4-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/grow/study">Study</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/grow/study/weeklyBibleReading">Weekly Bible Reading</a>
+                      </li>
+                      <li>
+                        <a routerLink="/grow/study/yearlyBibleReading">Yearly Bible Reading</a>
+                      </li>
+                      <li>
+                        <a routerLink="/grow/study/sermonFollowUp">Sermon Follow-up</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- Grow In Christ end-->
+            <!-- World Impact-->
+            <li class="menu-item-has-children menu-item-has-mega-menu">
+              <a routerLink="/world">World Impact</a>
+              <div class="mega-menu" style="margin-left: 0px;">
+                <ul class="sub-menu mega-menu-row">
+                  <!-- Column 1-->
+                  <li class="menu-item-has-children mega-menu-col m-4">
+                    <div class="row">
+                      <div class="col-md-12 menu-title-column">
+                        <h3 class="pb-3">Helping Others</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus nisi quis velit feugiat
+                          suscipit.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Column 2-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/world/lamb">L.A.M.B</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/world/lamb/newsletter">Newsletter</a>
+                      </li>
+                      <li>
+                        <a routerLink="/world/lamb/donations">Donations</a>
+                      </li>
+                      <li>
+                        <a routerLink="/world/lamb/impact">Impact</a>
+                      </li>
+                      <li>
+                        <a routerLink="/world/lamb/howToHelp">How to Help</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 3-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/world/missions">Missions</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/world/missions/equidor">Equidor</a>
+                      </li>
+                      <li>
+                        <a routerLink="/world/missions/southAmerica">South America</a>
+                      </li>
+                      <li>
+                        <a routerLink="/world/missions/localMissions">Local Missions</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 4-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/world/giving">Giving</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/world/giving/biblicalGiving">Biblical Giving</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- World Impact end-->
+            <!-- Who We Are-->
+            <li class="menu-item-has-children menu-item-has-mega-menu">
+              <a routerLink="/whoWeAre">Who We Are</a>
+              <div class="mega-menu" style="margin-left: 0px;">
+                <ul class="sub-menu mega-menu-row">
+                  <!-- Column 1-->
+                  <li class="menu-item-has-children mega-menu-col m-4">
+                    <div class="row">
+                      <div class="col-md-12 menu-title-column">
+                        <h3 class="pb-3">Why We're Different</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam faucibus nisi quis velit feugiat
+                          suscipit.</p>
+                      </div>
+                    </div>
+                  </li>
+                  <!-- Column 2-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/whoWeAre/elders">Our Elders</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/whoWeAre/elders/bobBrown">Bob Brown</a>
+                      </li>
+                      <li>
+                        <a routerLink="/whoWeAre/elders/billFreemen">Bill Freemen</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 3-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/whoWeAre/believe">We Believe..</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/whoWeAre/believe/whoWeAre">Who we are</a>
+                      </li>
+                      <li>
+                        <a routerLink="/whoWeAre/believe/sof">Statement of Faith</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <!-- Column 4-->
+                  <li class="menu-item-has-children mega-menu-col">
+                    <a routerLink="/whoWeAre/services">Services</a>
+                    <ul class="sub-menu">
+                      <li>
+                        <a routerLink="/whoWeAre/services/counceling">Counceling</a>
+                      </li>
+                      <li>
+                        <a routerLink="/whoWeAre/services/weddings">Weddings</a>
+                      </li>
+                      <li>
+                        <a routerLink="/whoWeAre/services/prayer">Prayer</a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- Who We Are End -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Extra menu-->
+    <div class="extra-nav">
+      <ul>
+        <li>
+          <a class="open-offcanvas" routerLink="#">
+            <span>Menu</span>
+            <span class="fa fa-bars"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- Mobile menu-->
+    <div class="nav-toggle">
+      <a routerLink="#" data-toggle="collapse" data-target=".inner-navigation">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+    </div>
+  </div>
+</header>
