@@ -1,6 +1,12 @@
 /* Footer Section */
 .footer {
  padding: 0 60px !important;
+ background-color: ##383838 !important;
+}
+
+.footer-logo {
+ font-size: 25px;
+ font-weight: bold;
 }
 
 .footer .widget {
@@ -73,6 +79,8 @@
  display: inline-block;
 }
 
-.footer_grey {
- color: #777;
+.footer .footer-copyright {
+ border-top: 1px solid rgba(255,255,255,.05);
+ margin: 0 -60px;
+ padding: 20px 60px;
 }

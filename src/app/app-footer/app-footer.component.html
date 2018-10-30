@@ -1,18 +1,12 @@
-<!-- <footer class="footer navbar-fixed-bottom">
-  <div class="container">
-    <span class="text-muted">Highlands Ranch Church of Christ | 10585 Mountain Vista Ridge, Highlands Ranch, CO 80126</span>
-  </div>
-</footer> -->
-
 <footer class="footer navbar-fixed-bottom">
   <div class="row">
     <div class="col-md-2 sideInfoParent">
       <aside class="widget sideInfoChild d-flex flex-column">
-        <p class="justify-content-start mb-5">
-          <img class="w-225" src="" alt="hrcoc Logo">
+        <p class="justify-content-start mb-3 footer-logo">
+          <!-- <img class="w-225" src="" alt="hrcoc Logo"> -->
+          Highlands Ranch Church of Christ
         </p>
         <p class="mb-4 fc-white">
-          Highlands Ranch Church of Christ <br />
           10585 Mountain Vista Ridge <br />
           Highlands Ranch, CO 80126
         </p>
@@ -31,7 +25,8 @@
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsAdults, 'fa-plus':!showDetailsAdults}" (click)="showDetailsAdults = ! showDetailsAdults"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsAdults, 'fa-plus':!showDetailsAdults}"
+                  (click)="showDetailsAdults = ! showDetailsAdults"></i>
                 <a>For Adults</a>
                 <ul class="subMenu-items" *ngIf="showDetailsAdults">
                   <li>
@@ -52,7 +47,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsKids, 'fa-plus':!showDetailsKids}"  (click)="showDetailsKids = ! showDetailsKids"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsKids, 'fa-plus':!showDetailsKids}"
+                  (click)="showDetailsKids = ! showDetailsKids"></i>
                 <a>For Kids</a>
                 <ul class="subMenu-items" *ngIf="showDetailsKids">
                   <li>
@@ -70,7 +66,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsEveryone, 'fa-plus':!showDetailsEveryone}"  (click)="showDetailsEveryone = ! showDetailsEveryone"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsEveryone, 'fa-plus':!showDetailsEveryone}"
+                  (click)="showDetailsEveryone = ! showDetailsEveryone"></i>
                 <a>For Everyone</a>
                 <ul class="subMenu-items" *ngIf="showDetailsEveryone">
                   <li>
@@ -94,7 +91,8 @@
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBaptism, 'fa-plus':!showDetailsBaptism}"  (click)="showDetailsBaptism = ! showDetailsBaptism"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBaptism, 'fa-plus':!showDetailsBaptism}"
+                  (click)="showDetailsBaptism = ! showDetailsBaptism"></i>
                 <a>Baptism</a>
                 <ul class="subMenu-items" *ngIf="showDetailsBaptism">
                   <li>
@@ -106,7 +104,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsCommunion, 'fa-plus':!showDetailsCommunion}"  (click)="showDetailsCommunion = ! showDetailsCommunion"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsCommunion, 'fa-plus':!showDetailsCommunion}"
+                  (click)="showDetailsCommunion = ! showDetailsCommunion"></i>
                 <a>Communion</a>
                 <ul class="subMenu-items" *ngIf="showDetailsCommunion">
                   <li>
@@ -118,7 +117,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsStudy, 'fa-plus':!showDetailsStudy}"  (click)="showDetailsStudy = ! showDetailsStudy"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsStudy, 'fa-plus':!showDetailsStudy}"
+                  (click)="showDetailsStudy = ! showDetailsStudy"></i>
                 <a>Study</a>
                 <ul class="subMenu-items" *ngIf="showDetailsStudy">
                   <li>
@@ -142,7 +142,8 @@
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsLamb, 'fa-plus':!showDetailsLamb}"  (click)="showDetailsLamb = ! showDetailsLamb"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsLamb, 'fa-plus':!showDetailsLamb}"
+                  (click)="showDetailsLamb = ! showDetailsLamb"></i>
                 <a>L.A.M.B</a>
                 <ul class="subMenu-items" *ngIf="showDetailsLamb">
                   <li>
@@ -160,7 +161,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsMissions, 'fa-plus':!showDetailsMissions}"  (click)="showDetailsMissions = ! showDetailsMissions"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsMissions, 'fa-plus':!showDetailsMissions}"
+                  (click)="showDetailsMissions = ! showDetailsMissions"></i>
                 <a>Missions</a>
                 <ul class="subMenu-items" *ngIf="showDetailsMissions">
                   <li>
@@ -175,7 +177,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsGiving, 'fa-plus':!showDetailsGiving}"  (click)="showDetailsGiving = ! showDetailsGiving"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsGiving, 'fa-plus':!showDetailsGiving}"
+                  (click)="showDetailsGiving = ! showDetailsGiving"></i>
                 <a>Giving</a>
                 <ul class="subMenu-items" *ngIf="showDetailsGiving">
                   <li>
@@ -195,7 +198,8 @@
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsElders, 'fa-plus':!showDetailsElders}"  (click)="showDetailsElders = ! showDetailsElders"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsElders, 'fa-plus':!showDetailsElders}"
+                  (click)="showDetailsElders = ! showDetailsElders"></i>
                 <a>Elders</a>
                 <ul class="subMenu-items" *ngIf="showDetailsElders">
                   <li>
@@ -207,7 +211,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBelieve, 'fa-plus':!showDetailsBelieve}"  (click)="showDetailsBelieve = ! showDetailsBelieve"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBelieve, 'fa-plus':!showDetailsBelieve}"
+                  (click)="showDetailsBelieve = ! showDetailsBelieve"></i>
                 <a>We believe...</a>
                 <ul class="subMenu-items" *ngIf="showDetailsBelieve">
                   <li>
@@ -219,7 +224,8 @@
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
-                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsServices, 'fa-plus':!showDetailsServices}"  (click)="showDetailsServices = ! showDetailsServices"></i>
+                <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsServices, 'fa-plus':!showDetailsServices}"
+                  (click)="showDetailsServices = ! showDetailsServices"></i>
                 <a>Services</a>
                 <ul class="subMenu-items" *ngIf="showDetailsServices">
                   <li>
@@ -240,6 +246,26 @@
             </ul>
           </aside>
         </div>
+        <div class="col-md-4">
+            <aside class="widget">
+                <div class="widget-title">
+                    <h5>Follow Us At</h5>
+                </div>
+                <div class="d-flex justify-content-left">
+                    <a class="pr-4" href="" target="_blank"><i class="fab fa-facebook-square fa-3x"></i></a>
+                    <a class="pr-4" href="" target="_blank"><i class="fab fa-youtube-square fa-3x"></i></a>
+                    <a class="pr-4" href="" target="_blank"><i class="fab fa-instagram fa-3x"></i></a>
+                    <a class="pr-4" href="" target="_blank"><i class="fab fa-twitter-square fa-3x"></i></a>
+                </div>
+            </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="row d-flex justify-content-center">
+      <div>
+        2018 Highlands Ranch Church of Christ. All rights reserved. 
       </div>
     </div>
   </div>

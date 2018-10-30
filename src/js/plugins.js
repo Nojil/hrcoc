@@ -16826,1808 +16826,3052 @@ if (typeof Object.create !== "function") {
 }));
 /*!
  * Name    : Just Another Parallax [Jarallax]
- * Version : 1.9.0
+ * Version : 1.10.3
  * Author  : nK <https://nkdev.info>
  * GitHub  : https://github.com/nk-o/jarallax
  */
-;(function() {
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// test if css property supported by browser
-// like "transform"
-var tempDiv = document.createElement('div');
-function isPropertySupported(property) {
-    var prefixes = ['O', 'Moz', 'ms', 'Ms', 'Webkit'];
-    var i = prefixes.length;
-    if (tempDiv.style[property] !== undefined) {
-        return true;
-    }
-    property = property.charAt(0).toUpperCase() + property.substr(1);
-    // eslint-disable-next-line no-empty
-    while (--i > -1 && tempDiv.style[prefixes[i] + property] === undefined) {}
-    return i >= 0;
+/******/ (function (modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if (installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+            /******/
 }
-
-var supportTransform = isPropertySupported('transform');
-var supportTransform3D = isPropertySupported('perspective');
-
-var ua = navigator.userAgent;
-var isAndroid = ua.toLowerCase().indexOf('android') > -1;
-var isIOs = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
-var isFirefox = ua.toLowerCase().indexOf('firefox') > -1;
-var isIE = ua.indexOf('MSIE ') > -1 || ua.indexOf('Trident/') > -1 || ua.indexOf('Edge/') > -1;
-var isIElt10 = document.all && !window.atob;
-
-// requestAnimationFrame polyfill
-var rAF = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-    setTimeout(callback, 1000 / 60);
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+            /******/
 };
-
-// init events
-function addEventListener(el, eventName, handler) {
-    if (el.addEventListener) {
-        el.addEventListener(eventName, handler);
-    } else {
-        el.attachEvent('on' + eventName, function () {
-            handler.call(el);
-        });
-    }
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+        /******/
 }
-
-// Window data
-var wndW = void 0;
-var wndH = void 0;
-var wndY = void 0;
-function updateWndVars() {
-    wndW = window.innerWidth || document.documentElement.clientWidth;
-    wndH = window.innerHeight || document.documentElement.clientHeight;
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function (exports, name, getter) {
+/******/ 		if (!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+                /******/
+});
+            /******/
 }
-updateWndVars();
-addEventListener(window, 'resize', updateWndVars);
-addEventListener(window, 'orientationchange', updateWndVars);
-addEventListener(window, 'load', updateWndVars);
+        /******/
+};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function (module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+        /******/
+};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function (object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+    /******/
+})
+/************************************************************************/
+/******/([
+/* 0 */
+/***/ (function (module, exports, __webpack_require__) {
 
-// list with all jarallax instances
-// need to render all in one scroll/resize event
-var jarallaxList = [];
+            "use strict";
+/* WEBPACK VAR INJECTION */(function (global) {
 
-// Animate if changed window size or scrolled page
-var oldPageData = false;
-function updateParallax() {
-    if (!jarallaxList.length) {
-        return;
-    }
+                var win;
 
-    if (window.pageYOffset !== undefined) {
-        wndY = window.pageYOffset;
-    } else {
-        wndY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
-    }
-
-    var isResized = !oldPageData || oldPageData.width !== wndW || oldPageData.height !== wndH;
-    var isScrolled = isResized || !oldPageData || oldPageData.y !== wndY;
-
-    if (isResized || isScrolled) {
-        jarallaxList.forEach(function (item) {
-            if (isResized) {
-                item.onResize();
-            }
-            if (isScrolled) {
-                item.onScroll();
-            }
-        });
-    }
-
-    oldPageData = {
-        width: wndW,
-        height: wndH,
-        y: wndY
-    };
-
-    rAF(updateParallax);
-}
-
-var instanceID = 0;
-
-// Jarallax class
-
-var Jarallax = function () {
-    function Jarallax(item, userOptions) {
-        _classCallCheck(this, Jarallax);
-
-        var _this = this;
-
-        _this.instanceID = instanceID++;
-
-        _this.$item = item;
-
-        _this.defaults = {
-            type: 'scroll', // type of parallax: scroll, scale, opacity, scale-opacity, scroll-opacity
-            speed: 0.5, // supported value from -1 to 2
-            imgSrc: null,
-            imgElement: '.jarallax-img',
-            imgSize: 'cover',
-            imgPosition: '50% 50%',
-            imgRepeat: 'no-repeat', // supported only for background, not for <img> tag
-            keepImg: false, // keep <img> tag in it's default place
-            elementInViewport: null,
-            zIndex: -100,
-            noAndroid: false,
-            noIos: false,
-
-            // video
-            videoSrc: null,
-            videoStartTime: 0,
-            videoEndTime: 0,
-            videoVolume: 0,
-            videoPlayOnlyVisible: true,
-
-            // events
-            onScroll: null, // function(calculations) {}
-            onInit: null, // function() {}
-            onDestroy: null, // function() {}
-            onCoverImage: null // function() {}
-        };
-
-        // DEPRECATED: old data-options
-        var deprecatedDataAttribute = _this.$item.getAttribute('data-jarallax');
-        var oldDataOptions = JSON.parse(deprecatedDataAttribute || '{}');
-        if (deprecatedDataAttribute) {
-            console.warn('Detected usage of deprecated data-jarallax JSON options, you should use pure data-attribute options. See info here - https://github.com/nk-o/jarallax/issues/53');
-        }
-
-        // prepare data-options
-        var dataOptions = _this.$item.dataset;
-        var pureDataOptions = {};
-        Object.keys(dataOptions).forEach(function (key) {
-            var loweCaseOption = key.substr(0, 1).toLowerCase() + key.substr(1);
-            if (loweCaseOption && typeof _this.defaults[loweCaseOption] !== 'undefined') {
-                pureDataOptions[loweCaseOption] = dataOptions[key];
-            }
-        });
-
-        _this.options = _this.extend({}, _this.defaults, oldDataOptions, pureDataOptions, userOptions);
-        _this.pureOptions = _this.extend({}, _this.options);
-
-        // prepare 'true' and 'false' strings to boolean
-        Object.keys(_this.options).forEach(function (key) {
-            if (_this.options[key] === 'true') {
-                _this.options[key] = true;
-            } else if (_this.options[key] === 'false') {
-                _this.options[key] = false;
-            }
-        });
-
-        // fix speed option [-1.0, 2.0]
-        _this.options.speed = Math.min(2, Math.max(-1, parseFloat(_this.options.speed)));
-
-        // custom element to check if parallax in viewport
-        var elementInVP = _this.options.elementInViewport;
-        // get first item from array
-        if (elementInVP && (typeof elementInVP === 'undefined' ? 'undefined' : _typeof(elementInVP)) === 'object' && typeof elementInVP.length !== 'undefined') {
-            elementInVP = elementInVP[0];
-        }
-        // check if dom element
-        if (!(elementInVP instanceof Element)) {
-            elementInVP = null;
-        }
-        _this.options.elementInViewport = elementInVP;
-
-        _this.image = {
-            src: _this.options.imgSrc || null,
-            $container: null,
-            // fix for some devices
-            // use <img> instead of background image - more smoothly
-            useImgTag: isIOs || isAndroid || isIE,
-
-            // position absolute is needed on IE9 and FireFox because fixed position have glitches
-            position: !supportTransform3D || isFirefox ? 'absolute' : 'fixed'
-        };
-
-        if (_this.initImg() && _this.canInitParallax()) {
-            _this.init();
-        }
-    }
-
-    // add styles to element
-
-
-    _createClass(Jarallax, [{
-        key: 'css',
-        value: function css(el, styles) {
-            if (typeof styles === 'string') {
-                if (window.getComputedStyle) {
-                    return window.getComputedStyle(el).getPropertyValue(styles);
-                }
-                return el.style[styles];
-            }
-
-            // add transform property with vendor prefixes
-            if (styles.transform) {
-                if (supportTransform3D) {
-                    styles.transform += ' translateZ(0)';
-                }
-                styles.WebkitTransform = styles.transform;
-                styles.MozTransform = styles.transform;
-                styles.msTransform = styles.transform;
-                styles.OTransform = styles.transform;
-            }
-
-            Object.keys(styles).forEach(function (key) {
-                el.style[key] = styles[key];
-            });
-            return el;
-        }
-
-        // Extend like jQuery.extend
-
-    }, {
-        key: 'extend',
-        value: function extend(out) {
-            var _arguments = arguments;
-
-            out = out || {};
-            Object.keys(arguments).forEach(function (i) {
-                if (!_arguments[i]) {
-                    return;
-                }
-                Object.keys(_arguments[i]).forEach(function (key) {
-                    out[key] = _arguments[i][key];
-                });
-            });
-            return out;
-        }
-
-        // get window size and scroll position. Useful for extensions
-
-    }, {
-        key: 'getWindowData',
-        value: function getWindowData() {
-            return {
-                width: wndW,
-                height: wndH,
-                y: wndY
-            };
-        }
-
-        // Jarallax functions
-
-    }, {
-        key: 'initImg',
-        value: function initImg() {
-            var _this = this;
-
-            // find image element
-            var $imgElement = _this.options.imgElement;
-            if ($imgElement && typeof $imgElement === 'string') {
-                $imgElement = _this.$item.querySelector($imgElement);
-            }
-            // check if dom element
-            if (!($imgElement instanceof Element)) {
-                $imgElement = null;
-            }
-
-            if ($imgElement) {
-                if (_this.options.keepImg) {
-                    _this.image.$item = $imgElement.cloneNode(true);
+                if (typeof window !== "undefined") {
+                    win = window;
+                } else if (typeof global !== "undefined") {
+                    win = global;
+                } else if (typeof self !== "undefined") {
+                    win = self;
                 } else {
-                    _this.image.$item = $imgElement;
-                    _this.image.$itemParent = $imgElement.parentNode;
+                    win = {};
                 }
-                _this.image.useImgTag = true;
-                _this.image.useCustomImgTag = true;
-            }
 
-            // true if there is img tag
-            if (_this.image.$item) {
-                return true;
-            }
+                module.exports = win;
+                /* WEBPACK VAR INJECTION */
+}.call(exports, __webpack_require__(2)))
 
-            // get image src
-            if (_this.image.src === null) {
-                _this.image.src = _this.css(_this.$item, 'background-image').replace(/^url\(['"]?/g, '').replace(/['"]?\)$/g, '');
-            }
-            return !(!_this.image.src || _this.image.src === 'none');
-        }
-    }, {
-        key: 'canInitParallax',
-        value: function canInitParallax() {
-            return supportTransform && !(isAndroid && this.options.noAndroid) && !(isIOs && this.options.noIos);
-        }
-    }, {
-        key: 'init',
-        value: function init() {
-            var _this = this;
-            var containerStyles = {
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                overflow: 'hidden',
-                pointerEvents: 'none'
+            /***/
+}),
+/* 1 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            module.exports = function (callback) {
+
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    // Already ready or interactive, execute callback
+                    callback.call();
+                } else if (document.attachEvent) {
+                    // Old browsers
+                    document.attachEvent('onreadystatechange', function () {
+                        if (document.readyState === 'interactive') callback.call();
+                    });
+                } else if (document.addEventListener) {
+                    // Modern browsers
+                    document.addEventListener('DOMContentLoaded', callback);
+                }
             };
-            var imageStyles = {};
 
-            if (!_this.options.keepImg) {
-                // save default user styles
-                var curStyle = _this.$item.getAttribute('style');
-                if (curStyle) {
-                    _this.$item.setAttribute('data-jarallax-original-styles', curStyle);
-                }
-                if (_this.image.$item && _this.image.useCustomImgTag) {
-                    var curImgStyle = _this.image.$item.getAttribute('style');
-                    if (curImgStyle) {
-                        _this.image.$item.setAttribute('data-jarallax-original-styles', curImgStyle);
+            /***/
+}),
+/* 2 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+            var g;
+
+            // This works in non-strict mode
+            g = function () {
+                return this;
+            }();
+
+            try {
+                // This works if eval is allowed (see CSP)
+                g = g || Function("return this")() || (1, eval)("this");
+            } catch (e) {
+                // This works if the window reference is available
+                if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+            }
+
+            // g can still be undefined, but nothing to do about it...
+            // We return undefined, instead of nothing here, so it's
+            // easier to handle this case. if(!global) { ...}
+
+            module.exports = g;
+
+            /***/
+}),
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            module.exports = __webpack_require__(12);
+
+
+            /***/
+}),
+/* 12 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+            var _liteReady = __webpack_require__(1);
+
+            var _liteReady2 = _interopRequireDefault(_liteReady);
+
+            var _global = __webpack_require__(0);
+
+            var _jarallax = __webpack_require__(13);
+
+            var _jarallax2 = _interopRequireDefault(_jarallax);
+
+            function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+            // no conflict
+            var oldPlugin = _global.window.jarallax;
+            _global.window.jarallax = _jarallax2.default;
+            _global.window.jarallax.noConflict = function () {
+                _global.window.jarallax = oldPlugin;
+                return this;
+            };
+
+            // jQuery support
+            if (typeof _global.jQuery !== 'undefined') {
+                var jQueryPlugin = function jQueryPlugin() {
+                    var args = arguments || [];
+                    Array.prototype.unshift.call(args, this);
+                    var res = _jarallax2.default.apply(_global.window, args);
+                    return (typeof res === 'undefined' ? 'undefined' : _typeof(res)) !== 'object' ? res : this;
+                };
+                jQueryPlugin.constructor = _jarallax2.default.constructor;
+
+                // no conflict
+                var oldJqPlugin = _global.jQuery.fn.jarallax;
+                _global.jQuery.fn.jarallax = jQueryPlugin;
+                _global.jQuery.fn.jarallax.noConflict = function () {
+                    _global.jQuery.fn.jarallax = oldJqPlugin;
+                    return this;
+                };
+            }
+
+            // data-jarallax initialization
+            (0, _liteReady2.default)(function () {
+                (0, _jarallax2.default)(document.querySelectorAll('[data-jarallax]'));
+            });
+
+            /***/
+}),
+/* 13 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+/* WEBPACK VAR INJECTION */(function (global) {
+
+                Object.defineProperty(exports, "__esModule", {
+                    value: true
+                });
+
+                var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+                var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+                var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+                var _liteReady = __webpack_require__(1);
+
+                var _liteReady2 = _interopRequireDefault(_liteReady);
+
+                var _rafl = __webpack_require__(14);
+
+                var _rafl2 = _interopRequireDefault(_rafl);
+
+                var _global = __webpack_require__(0);
+
+                function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+                function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+                var supportTransform = function () {
+                    var prefixes = 'transform WebkitTransform MozTransform'.split(' ');
+                    var div = document.createElement('div');
+                    for (var i = 0; i < prefixes.length; i++) {
+                        if (div && div.style[prefixes[i]] !== undefined) {
+                            return prefixes[i];
+                        }
+                    }
+                    return false;
+                }();
+
+                // Window data
+                var wndW = void 0;
+                var wndH = void 0;
+                var wndY = void 0;
+                var forceResizeParallax = false;
+                var forceScrollParallax = false;
+                function updateWndVars(e) {
+                    wndW = _global.window.innerWidth || document.documentElement.clientWidth;
+                    wndH = _global.window.innerHeight || document.documentElement.clientHeight;
+                    if ((typeof e === 'undefined' ? 'undefined' : _typeof(e)) === 'object' && (e.type === 'load' || e.type === 'dom-loaded')) {
+                        forceResizeParallax = true;
                     }
                 }
-            }
-
-            // set relative position and z-index to the parent
-            if (_this.css(_this.$item, 'position') === 'static') {
-                _this.css(_this.$item, {
-                    position: 'relative'
-                });
-            }
-            if (_this.css(_this.$item, 'z-index') === 'auto') {
-                _this.css(_this.$item, {
-                    zIndex: 0
-                });
-            }
-
-            // container for parallax image
-            _this.image.$container = document.createElement('div');
-            _this.css(_this.image.$container, containerStyles);
-            _this.css(_this.image.$container, {
-                'z-index': _this.options.zIndex
-            });
-            _this.image.$container.setAttribute('id', 'jarallax-container-' + _this.instanceID);
-            _this.$item.appendChild(_this.image.$container);
-
-            // use img tag
-            if (_this.image.useImgTag) {
-                if (!_this.image.$item) {
-                    _this.image.$item = document.createElement('img');
-                    _this.image.$item.setAttribute('src', _this.image.src);
-                }
-
-                imageStyles = _this.extend({
-                    'object-fit': _this.options.imgSize,
-                    // support for plugin https://github.com/bfred-it/object-fit-images
-                    'font-family': 'object-fit: ' + _this.options.imgSize + '; object-position: ' + _this.options.imgPosition + ';',
-                    'max-width': 'none'
-                }, containerStyles, imageStyles);
-
-                // use div with background image
-            } else {
-                _this.image.$item = document.createElement('div');
-                imageStyles = _this.extend({
-                    'background-position': _this.options.imgPosition,
-                    'background-size': _this.options.imgSize,
-                    'background-repeat': _this.options.imgRepeat,
-                    'background-image': 'url("' + _this.image.src + '")'
-                }, containerStyles, imageStyles);
-            }
-
-            // check if one of parents have transform style (without this check, scroll transform will be inverted)
-            // discussion - https://github.com/nk-o/jarallax/issues/9
-            var parentWithTransform = 0;
-            var $itemParents = _this.$item;
-            while ($itemParents !== null && $itemParents !== document && parentWithTransform === 0) {
-                var parentTransform = _this.css($itemParents, '-webkit-transform') || _this.css($itemParents, '-moz-transform') || _this.css($itemParents, 'transform');
-                if (parentTransform && parentTransform !== 'none') {
-                    parentWithTransform = 1;
-
-                    // add transform on parallax container if there is parent with transform
-                    _this.css(_this.image.$container, {
-                        transform: 'translateX(0) translateY(0)'
+                updateWndVars();
+                _global.window.addEventListener('resize', updateWndVars);
+                _global.window.addEventListener('orientationchange', updateWndVars);
+                _global.window.addEventListener('load', updateWndVars);
+                (0, _liteReady2.default)(function () {
+                    updateWndVars({
+                        type: 'dom-loaded'
                     });
-                }
-                $itemParents = $itemParents.parentNode;
-            }
-
-            // absolute position if one of parents have transformations or parallax without scroll
-            if (parentWithTransform || _this.options.type === 'opacity' || _this.options.type === 'scale' || _this.options.type === 'scale-opacity' || _this.options.speed === 1) {
-                _this.image.position = 'absolute';
-            }
-
-            // add position to parallax block
-            imageStyles.position = _this.image.position;
-
-            // insert parallax image
-            _this.css(_this.image.$item, imageStyles);
-            _this.image.$container.appendChild(_this.image.$item);
-
-            // set initial position and size
-            _this.coverImage();
-            _this.clipContainer();
-            _this.onScroll(true);
-
-            // call onInit event
-            if (_this.options.onInit) {
-                _this.options.onInit.call(_this);
-            }
-
-            // remove default user background
-            if (_this.css(_this.$item, 'background-image') !== 'none') {
-                _this.css(_this.$item, {
-                    'background-image': 'none'
                 });
-            }
 
-            _this.addToParallaxList();
-        }
+                // list with all jarallax instances
+                // need to render all in one scroll/resize event
+                var jarallaxList = [];
 
-        // add to parallax instances list
+                // Animate if changed window size or scrolled page
+                var oldPageData = false;
+                function updateParallax() {
+                    if (!jarallaxList.length) {
+                        return;
+                    }
 
-    }, {
-        key: 'addToParallaxList',
-        value: function addToParallaxList() {
-            jarallaxList.push(this);
+                    if (_global.window.pageYOffset !== undefined) {
+                        wndY = _global.window.pageYOffset;
+                    } else {
+                        wndY = (document.documentElement || document.body.parentNode || document.body).scrollTop;
+                    }
 
-            if (jarallaxList.length === 1) {
-                updateParallax();
-            }
-        }
+                    var isResized = forceResizeParallax || !oldPageData || oldPageData.width !== wndW || oldPageData.height !== wndH;
+                    var isScrolled = forceScrollParallax || isResized || !oldPageData || oldPageData.y !== wndY;
 
-        // remove from parallax instances list
+                    forceResizeParallax = false;
+                    forceScrollParallax = false;
 
-    }, {
-        key: 'removeFromParallaxList',
-        value: function removeFromParallaxList() {
-            var _this = this;
+                    if (isResized || isScrolled) {
+                        jarallaxList.forEach(function (item) {
+                            if (isResized) {
+                                item.onResize();
+                            }
+                            if (isScrolled) {
+                                item.onScroll();
+                            }
+                        });
 
-            jarallaxList.forEach(function (item, key) {
-                if (item.instanceID === _this.instanceID) {
-                    jarallaxList.splice(key, 1);
-                }
-            });
-        }
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            var _this = this;
+                        oldPageData = {
+                            width: wndW,
+                            height: wndH,
+                            y: wndY
+                        };
+                    }
 
-            _this.removeFromParallaxList();
-
-            // return styles on container as before jarallax init
-            var originalStylesTag = _this.$item.getAttribute('data-jarallax-original-styles');
-            _this.$item.removeAttribute('data-jarallax-original-styles');
-            // null occurs if there is no style tag before jarallax init
-            if (!originalStylesTag) {
-                _this.$item.removeAttribute('style');
-            } else {
-                _this.$item.setAttribute('style', originalStylesTag);
-            }
-
-            if (_this.image.$item && _this.image.useCustomImgTag) {
-                // return styles on img tag as before jarallax init
-                var originalStylesImgTag = _this.image.$item.getAttribute('data-jarallax-original-styles');
-                _this.image.$item.removeAttribute('data-jarallax-original-styles');
-                // null occurs if there is no style tag before jarallax init
-                if (!originalStylesImgTag) {
-                    _this.image.$item.removeAttribute('style');
-                } else {
-                    _this.image.$item.setAttribute('style', originalStylesTag);
+                    (0, _rafl2.default)(updateParallax);
                 }
 
-                // move img tag to its default position
-                if (_this.image.$itemParent) {
-                    _this.image.$itemParent.appendChild(_this.image.$item);
-                }
+                // ResizeObserver
+                var resizeObserver = global.ResizeObserver ? new global.ResizeObserver(function (entry) {
+                    if (entry && entry.length) {
+                        (0, _rafl2.default)(function () {
+                            entry.forEach(function (item) {
+                                if (item.target && item.target.jarallax) {
+                                    if (!forceResizeParallax) {
+                                        item.target.jarallax.onResize();
+                                    }
+                                    forceScrollParallax = true;
+                                }
+                            });
+                        });
+                    }
+                }) : false;
+
+                var instanceID = 0;
+
+                // Jarallax class
+
+                var Jarallax = function () {
+                    function Jarallax(item, userOptions) {
+                        _classCallCheck(this, Jarallax);
+
+                        var self = this;
+
+                        self.instanceID = instanceID++;
+
+                        self.$item = item;
+
+                        self.defaults = {
+                            type: 'scroll', // type of parallax: scroll, scale, opacity, scale-opacity, scroll-opacity
+                            speed: 0.5, // supported value from -1 to 2
+                            imgSrc: null,
+                            imgElement: '.jarallax-img',
+                            imgSize: 'cover',
+                            imgPosition: '50% 50%',
+                            imgRepeat: 'no-repeat', // supported only for background, not for <img> tag
+                            keepImg: false, // keep <img> tag in it's default place
+                            elementInViewport: null,
+                            zIndex: 0,
+                            disableParallax: false,
+                            disableVideo: false,
+                            automaticResize: true, // use ResizeObserver to recalculate position and size of parallax image
+                            useDefault: true,
+
+                            // video
+                            videoSrc: null,
+                            videoStartTime: 0,
+                            videoEndTime: 0,
+                            videoVolume: 0,
+                            videoPlayOnlyVisible: true,
+
+                            // events
+                            onScroll: null, // function(calculations) {}
+                            onInit: null, // function() {}
+                            onDestroy: null, // function() {}
+                            onCoverImage: null // function() {}
+                        };
+
+                        // DEPRECATED: old data-options
+                        var deprecatedDataAttribute = self.$item.getAttribute('data-jarallax');
+                        var oldDataOptions = JSON.parse(deprecatedDataAttribute || '{}');
+                        if (deprecatedDataAttribute) {
+                            // eslint-disable-next-line no-console
+                            console.warn('Detected usage of deprecated data-jarallax JSON options, you should use pure data-attribute options. See info here - https://github.com/nk-o/jarallax/issues/53');
+                        }
+
+                        // prepare data-options
+                        var dataOptions = self.$item.dataset || {};
+                        var pureDataOptions = {};
+                        Object.keys(dataOptions).forEach(function (key) {
+                            var loweCaseOption = key.substr(0, 1).toLowerCase() + key.substr(1);
+                            if (loweCaseOption && typeof self.defaults[loweCaseOption] !== 'undefined') {
+                                pureDataOptions[loweCaseOption] = dataOptions[key];
+                            }
+                        });
+
+                        self.options = self.extend({}, self.defaults, oldDataOptions, pureDataOptions, userOptions);
+                        self.pureOptions = self.extend({}, self.options);
+
+                        // prepare 'true' and 'false' strings to boolean
+                        Object.keys(self.options).forEach(function (key) {
+                            if (self.options[key] === 'true') {
+                                self.options[key] = true;
+                            } else if (self.options[key] === 'false') {
+                                self.options[key] = false;
+                            }
+                        });
+
+                        // fix speed option [-1.0, 2.0]
+                        self.options.speed = Math.min(2, Math.max(-1, parseFloat(self.options.speed)));
+
+                        // deprecated noAndroid and noIos options
+                        if (self.options.noAndroid || self.options.noIos) {
+                            // eslint-disable-next-line no-console
+                            console.warn('Detected usage of deprecated noAndroid or noIos options, you should use disableParallax option. See info here - https://github.com/nk-o/jarallax/#disable-on-mobile-devices');
+
+                            // prepare fallback if disableParallax option is not used
+                            if (!self.options.disableParallax) {
+                                if (self.options.noIos && self.options.noAndroid) {
+                                    self.options.disableParallax = /iPad|iPhone|iPod|Android/;
+                                } else if (self.options.noIos) {
+                                    self.options.disableParallax = /iPad|iPhone|iPod/;
+                                } else if (self.options.noAndroid) {
+                                    self.options.disableParallax = /Android/;
+                                }
+                            }
+                        }
+
+                        // prepare disableParallax callback
+                        if (typeof self.options.disableParallax === 'string') {
+                            self.options.disableParallax = new RegExp(self.options.disableParallax);
+                        }
+                        if (self.options.disableParallax instanceof RegExp) {
+                            var disableParallaxRegexp = self.options.disableParallax;
+                            self.options.disableParallax = function () {
+                                return disableParallaxRegexp.test(navigator.userAgent);
+                            };
+                        }
+                        if (typeof self.options.disableParallax !== 'function') {
+                            self.options.disableParallax = function () {
+                                return false;
+                            };
+                        }
+
+                        // prepare disableVideo callback
+                        if (typeof self.options.disableVideo === 'string') {
+                            self.options.disableVideo = new RegExp(self.options.disableVideo);
+                        }
+                        if (self.options.disableVideo instanceof RegExp) {
+                            var disableVideoRegexp = self.options.disableVideo;
+                            self.options.disableVideo = function () {
+                                return disableVideoRegexp.test(navigator.userAgent);
+                            };
+                        }
+                        if (typeof self.options.disableVideo !== 'function') {
+                            self.options.disableVideo = function () {
+                                return false;
+                            };
+                        }
+
+                        // custom element to check if parallax in viewport
+                        var elementInVP = self.options.elementInViewport;
+                        // get first item from array
+                        if (elementInVP && (typeof elementInVP === 'undefined' ? 'undefined' : _typeof(elementInVP)) === 'object' && typeof elementInVP.length !== 'undefined') {
+                            var _elementInVP = elementInVP;
+
+                            var _elementInVP2 = _slicedToArray(_elementInVP, 1);
+
+                            elementInVP = _elementInVP2[0];
+                        }
+                        // check if dom element
+                        if (!(elementInVP instanceof Element)) {
+                            elementInVP = null;
+                        }
+                        self.options.elementInViewport = elementInVP;
+
+                        self.image = {
+                            src: self.options.imgSrc || null,
+                            $container: null,
+                            useImgTag: false,
+
+                            // position fixed is needed for the most of browsers because absolute position have glitches
+                            // on MacOS with smooth scroll there is a huge lags with absolute position - https://github.com/nk-o/jarallax/issues/75
+                            // on mobile devices better scrolled with absolute position
+                            position: /iPad|iPhone|iPod|Android/.test(navigator.userAgent) ? 'absolute' : 'fixed'
+                        };
+
+                        if (self.initImg() && self.canInitParallax()) {
+                            self.init();
+                        }
+                    }
+
+                    // add styles to element
+
+
+                    _createClass(Jarallax, [{
+                        key: 'css',
+                        value: function css(el, styles) {
+                            if (typeof styles === 'string') {
+                                return _global.window.getComputedStyle(el).getPropertyValue(styles);
+                            }
+
+                            // add transform property with vendor prefix
+                            if (styles.transform && supportTransform) {
+                                styles[supportTransform] = styles.transform;
+                            }
+
+                            Object.keys(styles).forEach(function (key) {
+                                el.style[key] = styles[key];
+                            });
+                            return el;
+                        }
+
+                        // Extend like jQuery.extend
+
+                    }, {
+                        key: 'extend',
+                        value: function extend(out) {
+                            var _arguments = arguments;
+
+                            out = out || {};
+                            Object.keys(arguments).forEach(function (i) {
+                                if (!_arguments[i]) {
+                                    return;
+                                }
+                                Object.keys(_arguments[i]).forEach(function (key) {
+                                    out[key] = _arguments[i][key];
+                                });
+                            });
+                            return out;
+                        }
+
+                        // get window size and scroll position. Useful for extensions
+
+                    }, {
+                        key: 'getWindowData',
+                        value: function getWindowData() {
+                            return {
+                                width: wndW,
+                                height: wndH,
+                                y: wndY
+                            };
+                        }
+
+                        // Jarallax functions
+
+                    }, {
+                        key: 'initImg',
+                        value: function initImg() {
+                            var self = this;
+
+                            // find image element
+                            var $imgElement = self.options.imgElement;
+                            if ($imgElement && typeof $imgElement === 'string') {
+                                $imgElement = self.$item.querySelector($imgElement);
+                            }
+                            // check if dom element
+                            if (!($imgElement instanceof Element)) {
+                                $imgElement = null;
+                            }
+
+                            if ($imgElement) {
+                                if (self.options.keepImg) {
+                                    self.image.$item = $imgElement.cloneNode(true);
+                                } else {
+                                    self.image.$item = $imgElement;
+                                    self.image.$itemParent = $imgElement.parentNode;
+                                }
+                                self.image.useImgTag = true;
+                            }
+
+                            // true if there is img tag
+                            if (self.image.$item) {
+                                return true;
+                            }
+
+                            // get image src
+                            if (self.image.src === null) {
+                                self.image.src = self.css(self.$item, 'background-image').replace(/^url\(['"]?/g, '').replace(/['"]?\)$/g, '');
+                            }
+                            return !(!self.image.src || self.image.src === 'none');
+                        }
+                    }, {
+                        key: 'canInitParallax',
+                        value: function canInitParallax() {
+                            return supportTransform && !this.options.disableParallax();
+                        }
+                    }, {
+                        key: 'init',
+                        value: function init() {
+                            var self = this;
+                            var containerStyles = {
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                overflow: 'hidden',
+                                pointerEvents: 'none'
+                            };
+                            var imageStyles = {};
+
+                            if (!self.options.keepImg) {
+                                // save default user styles
+                                var curStyle = self.$item.getAttribute('style');
+                                if (curStyle) {
+                                    self.$item.setAttribute('data-jarallax-original-styles', curStyle);
+                                }
+                                if (self.image.useImgTag) {
+                                    var curImgStyle = self.image.$item.getAttribute('style');
+                                    if (curImgStyle) {
+                                        self.image.$item.setAttribute('data-jarallax-original-styles', curImgStyle);
+                                    }
+                                }
+                            }
+
+                            // set relative position and z-index to the parent
+                            if (self.css(self.$item, 'position') === 'static') {
+                                self.css(self.$item, {
+                                    position: 'relative'
+                                });
+                            }
+                            if (self.css(self.$item, 'z-index') === 'auto') {
+                                self.css(self.$item, {
+                                    zIndex: 0
+                                });
+                            }
+
+                            // container for parallax image
+                            self.image.$container = document.createElement('div');
+                            self.css(self.image.$container, containerStyles);
+                            self.css(self.image.$container, {
+                                'z-index': self.options.zIndex
+                            });
+                            self.image.$container.setAttribute('id', 'jarallax-container-' + self.instanceID);
+                            self.$item.appendChild(self.image.$container);
+
+                            // use img tag
+                            if (self.image.useImgTag) {
+                                imageStyles = self.extend({
+                                    'object-fit': self.options.imgSize,
+                                    'object-position': self.options.imgPosition,
+                                    // support for plugin https://github.com/bfred-it/object-fit-images
+                                    'font-family': 'object-fit: ' + self.options.imgSize + '; object-position: ' + self.options.imgPosition + ';',
+                                    'max-width': 'none'
+                                }, containerStyles, imageStyles);
+
+                                // use div with background image
+                            } else {
+                                self.image.$item = document.createElement('div');
+                                if (self.image.src) {
+                                    imageStyles = self.extend({
+                                        'background-position': self.options.imgPosition,
+                                        'background-size': self.options.imgSize,
+                                        'background-repeat': self.options.imgRepeat,
+                                        'background-image': 'url("' + self.image.src + '")'
+                                    }, containerStyles, imageStyles);
+                                }
+                            }
+
+                            if (self.options.type === 'opacity' || self.options.type === 'scale' || self.options.type === 'scale-opacity' || self.options.speed === 1) {
+                                self.image.position = 'absolute';
+                            }
+
+                            // check if one of parents have transform style (without this check, scroll transform will be inverted if used parallax with position fixed)
+                            // discussion - https://github.com/nk-o/jarallax/issues/9
+                            if (self.image.position === 'fixed') {
+                                var parentWithTransform = 0;
+                                var $itemParents = self.$item;
+                                while ($itemParents !== null && $itemParents !== document && parentWithTransform === 0) {
+                                    var parentTransform = self.css($itemParents, '-webkit-transform') || self.css($itemParents, '-moz-transform') || self.css($itemParents, 'transform');
+                                    if (parentTransform && parentTransform !== 'none') {
+                                        parentWithTransform = 1;
+                                        self.image.position = 'absolute';
+                                    }
+                                    $itemParents = $itemParents.parentNode;
+                                }
+                            }
+
+                            // add position to parallax block
+                            imageStyles.position = self.image.position;
+
+                            // insert parallax image
+                            self.css(self.image.$item, imageStyles);
+                            self.image.$container.appendChild(self.image.$item);
+
+                            // set initial position and size
+                            self.coverImage();
+                            self.clipContainer();
+                            self.onScroll(true);
+
+                            // ResizeObserver
+                            if (self.options.automaticResize && resizeObserver) {
+                                resizeObserver.observe(self.$item);
+                            }
+
+                            // call onInit event
+                            if (self.options.onInit) {
+                                self.options.onInit.call(self);
+                            }
+
+                            // remove default user background
+                            if (!self.options.useDefault) {
+                                if (self.css(self.$item, 'background-image') !== 'none') {
+                                    self.css(self.$item, {
+                                      'background-image': 'none'
+                                    });
+                                }
+                            }
+
+                            self.addToParallaxList();
+                        }
+
+                        // add to parallax instances list
+
+                    }, {
+                        key: 'addToParallaxList',
+                        value: function addToParallaxList() {
+                            jarallaxList.push(this);
+
+                            if (jarallaxList.length === 1) {
+                                updateParallax();
+                            }
+                        }
+
+                        // remove from parallax instances list
+
+                    }, {
+                        key: 'removeFromParallaxList',
+                        value: function removeFromParallaxList() {
+                            var self = this;
+
+                            jarallaxList.forEach(function (item, key) {
+                                if (item.instanceID === self.instanceID) {
+                                    jarallaxList.splice(key, 1);
+                                }
+                            });
+                        }
+                    }, {
+                        key: 'destroy',
+                        value: function destroy() {
+                            var self = this;
+
+                            self.removeFromParallaxList();
+
+                            // return styles on container as before jarallax init
+                            var originalStylesTag = self.$item.getAttribute('data-jarallax-original-styles');
+                            self.$item.removeAttribute('data-jarallax-original-styles');
+                            // null occurs if there is no style tag before jarallax init
+                            if (!originalStylesTag) {
+                                self.$item.removeAttribute('style');
+                            } else {
+                                self.$item.setAttribute('style', originalStylesTag);
+                            }
+
+                            if (self.image.useImgTag) {
+                                // return styles on img tag as before jarallax init
+                                var originalStylesImgTag = self.image.$item.getAttribute('data-jarallax-original-styles');
+                                self.image.$item.removeAttribute('data-jarallax-original-styles');
+                                // null occurs if there is no style tag before jarallax init
+                                if (!originalStylesImgTag) {
+                                    self.image.$item.removeAttribute('style');
+                                } else {
+                                    self.image.$item.setAttribute('style', originalStylesTag);
+                                }
+
+                                // move img tag to its default position
+                                if (self.image.$itemParent) {
+                                    self.image.$itemParent.appendChild(self.image.$item);
+                                }
+                            }
+
+                            // remove additional dom elements
+                            if (self.$clipStyles) {
+                                self.$clipStyles.parentNode.removeChild(self.$clipStyles);
+                            }
+                            if (self.image.$container) {
+                                self.image.$container.parentNode.removeChild(self.image.$container);
+                            }
+
+                            // call onDestroy event
+                            if (self.options.onDestroy) {
+                                self.options.onDestroy.call(self);
+                            }
+
+                            // delete jarallax from item
+                            delete self.$item.jarallax;
+                        }
+
+                        // it will remove some image overlapping
+                        // overlapping occur due to an image position fixed inside absolute position element
+
+                    }, {
+                        key: 'clipContainer',
+                        value: function clipContainer() {
+                            // needed only when background in fixed position
+                            if (this.image.position !== 'fixed') {
+                                return;
+                            }
+
+                            var self = this;
+                            var rect = self.image.$container.getBoundingClientRect();
+                            var width = rect.width,
+                                height = rect.height;
+
+
+                            if (!self.$clipStyles) {
+                                self.$clipStyles = document.createElement('style');
+                                self.$clipStyles.setAttribute('type', 'text/css');
+                                self.$clipStyles.setAttribute('id', 'jarallax-clip-' + self.instanceID);
+                                var head = document.head || document.getElementsByTagName('head')[0];
+                                head.appendChild(self.$clipStyles);
+                            }
+
+                            var styles = '#jarallax-container-' + self.instanceID + ' {\n           clip: rect(0 ' + width + 'px ' + height + 'px 0);\n           clip: rect(0, ' + width + 'px, ' + height + 'px, 0);\n        }';
+
+                            // add clip styles inline (this method need for support IE8 and less browsers)
+                            if (self.$clipStyles.styleSheet) {
+                                self.$clipStyles.styleSheet.cssText = styles;
+                            } else {
+                                self.$clipStyles.innerHTML = styles;
+                            }
+                        }
+                    }, {
+                        key: 'coverImage',
+                        value: function coverImage() {
+                            var self = this;
+
+                            var rect = self.image.$container.getBoundingClientRect();
+                            var contH = rect.height;
+                            var speed = self.options.speed;
+
+                            var isScroll = self.options.type === 'scroll' || self.options.type === 'scroll-opacity';
+                            var scrollDist = 0;
+                            var resultH = contH;
+                            var resultMT = 0;
+
+                            // scroll parallax
+                            if (isScroll) {
+                                // scroll distance and height for image
+                                if (speed < 0) {
+                                    scrollDist = speed * Math.max(contH, wndH);
+                                } else {
+                                    scrollDist = speed * (contH + wndH);
+                                }
+
+                                // size for scroll parallax
+                                if (speed > 1) {
+                                    resultH = Math.abs(scrollDist - wndH);
+                                } else if (speed < 0) {
+                                    resultH = scrollDist / speed + Math.abs(scrollDist);
+                                } else {
+                                    resultH += Math.abs(wndH - contH) * (1 - speed);
+                                }
+
+                                scrollDist /= 2;
+                            }
+
+                            // store scroll distance
+                            self.parallaxScrollDistance = scrollDist;
+
+                            // vertical center
+                            if (isScroll) {
+                                resultMT = (wndH - resultH) / 2;
+                            } else {
+                                resultMT = (contH - resultH) / 2;
+                            }
+
+                            // apply result to item
+                            self.css(self.image.$item, {
+                                height: resultH + 'px',
+                                marginTop: resultMT + 'px',
+                                left: self.image.position === 'fixed' ? rect.left + 'px' : '0',
+                                width: rect.width + 'px'
+                            });
+
+                            // call onCoverImage event
+                            if (self.options.onCoverImage) {
+                                self.options.onCoverImage.call(self);
+                            }
+
+                            // return some useful data. Used in the video cover function
+                            return {
+                                image: {
+                                    height: resultH,
+                                    marginTop: resultMT
+                                },
+                                container: rect
+                            };
+                        }
+                    }, {
+                        key: 'isVisible',
+                        value: function isVisible() {
+                            return this.isElementInViewport || false;
+                        }
+                    }, {
+                        key: 'onScroll',
+                        value: function onScroll(force) {
+                            var self = this;
+
+                            var rect = self.$item.getBoundingClientRect();
+                            var contT = rect.top;
+                            var contH = rect.height;
+                            var styles = {};
+
+                            // check if in viewport
+                            var viewportRect = rect;
+                            if (self.options.elementInViewport) {
+                                viewportRect = self.options.elementInViewport.getBoundingClientRect();
+                            }
+                            self.isElementInViewport = viewportRect.bottom >= 0 && viewportRect.right >= 0 && viewportRect.top <= wndH && viewportRect.left <= wndW;
+
+                            // stop calculations if item is not in viewport
+                            if (force ? false : !self.isElementInViewport) {
+                                return;
+                            }
+
+                            // calculate parallax helping variables
+                            var beforeTop = Math.max(0, contT);
+                            var beforeTopEnd = Math.max(0, contH + contT);
+                            var afterTop = Math.max(0, -contT);
+                            var beforeBottom = Math.max(0, contT + contH - wndH);
+                            var beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
+                            var afterBottom = Math.max(0, -contT + wndH - contH);
+                            var fromViewportCenter = 1 - 2 * (wndH - contT) / (wndH + contH);
+
+                            // calculate on how percent of section is visible
+                            var visiblePercent = 1;
+                            if (contH < wndH) {
+                                visiblePercent = 1 - (afterTop || beforeBottom) / contH;
+                            } else if (beforeTopEnd <= wndH) {
+                                visiblePercent = beforeTopEnd / wndH;
+                            } else if (beforeBottomEnd <= wndH) {
+                                visiblePercent = beforeBottomEnd / wndH;
+                            }
+
+                            // opacity
+                            if (self.options.type === 'opacity' || self.options.type === 'scale-opacity' || self.options.type === 'scroll-opacity') {
+                                styles.transform = 'translate3d(0,0,0)';
+                                styles.opacity = visiblePercent;
+                            }
+
+                            // scale
+                            if (self.options.type === 'scale' || self.options.type === 'scale-opacity') {
+                                var scale = 1;
+                                if (self.options.speed < 0) {
+                                    scale -= self.options.speed * visiblePercent;
+                                } else {
+                                    scale += self.options.speed * (1 - visiblePercent);
+                                }
+                                styles.transform = 'scale(' + scale + ') translate3d(0,0,0)';
+                            }
+
+                            // scroll
+                            if (self.options.type === 'scroll' || self.options.type === 'scroll-opacity') {
+                                var positionY = self.parallaxScrollDistance * fromViewportCenter;
+
+                                // fix if parallax block in absolute position
+                                if (self.image.position === 'absolute') {
+                                    positionY -= contT;
+                                }
+
+                                styles.transform = 'translate3d(0,' + positionY + 'px,0)';
+                            }
+
+                            self.css(self.image.$item, styles);
+
+                            // call onScroll event
+                            if (self.options.onScroll) {
+                                self.options.onScroll.call(self, {
+                                    section: rect,
+
+                                    beforeTop: beforeTop,
+                                    beforeTopEnd: beforeTopEnd,
+                                    afterTop: afterTop,
+                                    beforeBottom: beforeBottom,
+                                    beforeBottomEnd: beforeBottomEnd,
+                                    afterBottom: afterBottom,
+
+                                    visiblePercent: visiblePercent,
+                                    fromViewportCenter: fromViewportCenter
+                                });
+                            }
+                        }
+                    }, {
+                        key: 'onResize',
+                        value: function onResize() {
+                            this.coverImage();
+                            this.clipContainer();
+                        }
+                    }]);
+
+                    return Jarallax;
+                }();
+
+                // global definition
+
+
+                var plugin = function plugin(items) {
+                    // check for dom element
+                    // thanks: http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
+                    if ((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? items instanceof HTMLElement : items && (typeof items === 'undefined' ? 'undefined' : _typeof(items)) === 'object' && items !== null && items.nodeType === 1 && typeof items.nodeName === 'string') {
+                        items = [items];
+                    }
+
+                    var options = arguments[1];
+                    var args = Array.prototype.slice.call(arguments, 2);
+                    var len = items.length;
+                    var k = 0;
+                    var ret = void 0;
+
+                    for (k; k < len; k++) {
+                        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' || typeof options === 'undefined') {
+                            if (!items[k].jarallax) {
+                                items[k].jarallax = new Jarallax(items[k], options);
+                            }
+                        } else if (items[k].jarallax) {
+                            // eslint-disable-next-line prefer-spread
+                            ret = items[k].jarallax[options].apply(items[k].jarallax, args);
+                        }
+                        if (typeof ret !== 'undefined') {
+                            return ret;
+                        }
+                    }
+
+                    return items;
+                };
+                plugin.constructor = Jarallax;
+
+                exports.default = plugin;
+                /* WEBPACK VAR INJECTION */
+}.call(exports, __webpack_require__(2)))
+
+            /***/
+}),
+/* 14 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            var global = __webpack_require__(0);
+
+            /**
+             * `requestAnimationFrame()`
+             */
+
+            var request = global.requestAnimationFrame || global.webkitRequestAnimationFrame || global.mozRequestAnimationFrame || fallback;
+
+            var prev = +new Date();
+            function fallback(fn) {
+                var curr = +new Date();
+                var ms = Math.max(0, 16 - (curr - prev));
+                var req = setTimeout(fn, ms);
+                return prev = curr, req;
             }
 
-            // remove additional dom elements
-            if (_this.$clipStyles) {
-                _this.$clipStyles.parentNode.removeChild(_this.$clipStyles);
-            }
-            if (_this.image.$container) {
-                _this.image.$container.parentNode.removeChild(_this.image.$container);
-            }
+            /**
+             * `cancelAnimationFrame()`
+             */
 
-            // call onDestroy event
-            if (_this.options.onDestroy) {
-                _this.options.onDestroy.call(_this);
+            var cancel = global.cancelAnimationFrame || global.webkitCancelAnimationFrame || global.mozCancelAnimationFrame || clearTimeout;
+
+            if (Function.prototype.bind) {
+                request = request.bind(global);
+                cancel = cancel.bind(global);
             }
 
-            // delete jarallax from item
-            delete _this.$item.jarallax;
-        }
+            exports = module.exports = request;
+            exports.cancel = cancel;
 
-        // it will remove some image overlapping
-        // overlapping occur due to an image position fixed inside absolute position element (webkit based browsers works without any fix)
-
-    }, {
-        key: 'clipContainer',
-        value: function clipContainer() {
-            // clip is not working properly on real IE9 and less
-            if (isIElt10) {
-                return;
-            }
-
-            // needed only when background in fixed position
-            if (this.image.position !== 'fixed') {
-                return;
-            }
-
-            var _this = this;
-            var rect = _this.image.$container.getBoundingClientRect();
-            var width = rect.width;
-            var height = rect.height;
-
-            if (!_this.$clipStyles) {
-                _this.$clipStyles = document.createElement('style');
-                _this.$clipStyles.setAttribute('type', 'text/css');
-                _this.$clipStyles.setAttribute('id', 'jarallax-clip-' + _this.instanceID);
-                var head = document.head || document.getElementsByTagName('head')[0];
-                head.appendChild(_this.$clipStyles);
-            }
-
-            var styles = ['#jarallax-container-' + _this.instanceID + ' {', '   clip: rect(0 ' + width + 'px ' + height + 'px 0);', '   clip: rect(0, ' + width + 'px, ' + height + 'px, 0);', '}'].join('\n');
-
-            // add clip styles inline (this method need for support IE8 and less browsers)
-            if (_this.$clipStyles.styleSheet) {
-                _this.$clipStyles.styleSheet.cssText = styles;
-            } else {
-                _this.$clipStyles.innerHTML = styles;
-            }
-        }
-    }, {
-        key: 'coverImage',
-        value: function coverImage() {
-            var _this = this;
-
-            var rect = _this.image.$container.getBoundingClientRect();
-            var contH = rect.height;
-            var speed = _this.options.speed;
-            var isScroll = _this.options.type === 'scroll' || _this.options.type === 'scroll-opacity';
-            var scrollDist = 0;
-            var resultH = contH;
-            var resultMT = 0;
-
-            // scroll parallax
-            if (isScroll) {
-                // scroll distance and height for image
-                if (speed < 0) {
-                    scrollDist = speed * Math.max(contH, wndH);
-                } else {
-                    scrollDist = speed * (contH + wndH);
-                }
-
-                // size for scroll parallax
-                if (speed > 1) {
-                    resultH = Math.abs(scrollDist - wndH);
-                } else if (speed < 0) {
-                    resultH = scrollDist / speed + Math.abs(scrollDist);
-                } else {
-                    resultH += Math.abs(wndH - contH) * (1 - speed);
-                }
-
-                scrollDist /= 2;
-            }
-
-            // store scroll distance
-            _this.parallaxScrollDistance = scrollDist;
-
-            // vertical center
-            if (isScroll) {
-                resultMT = (wndH - resultH) / 2;
-            } else {
-                resultMT = (contH - resultH) / 2;
-            }
-
-            // apply result to item
-            _this.css(_this.image.$item, {
-                height: resultH + 'px',
-                marginTop: resultMT + 'px',
-                left: _this.image.position === 'fixed' ? rect.left + 'px' : '0',
-                width: rect.width + 'px'
-            });
-
-            // call onCoverImage event
-            if (_this.options.onCoverImage) {
-                _this.options.onCoverImage.call(_this);
-            }
-
-            // return some useful data. Used in the video cover function
-            return {
-                image: {
-                    height: resultH,
-                    marginTop: resultMT
-                },
-                container: rect
-            };
-        }
-    }, {
-        key: 'isVisible',
-        value: function isVisible() {
-            return this.isElementInViewport || false;
-        }
-    }, {
-        key: 'onScroll',
-        value: function onScroll(force) {
-            var _this = this;
-
-            var rect = _this.$item.getBoundingClientRect();
-            var contT = rect.top;
-            var contH = rect.height;
-            var styles = {};
-
-            // check if in viewport
-            var viewportRect = rect;
-            if (_this.options.elementInViewport) {
-                viewportRect = _this.options.elementInViewport.getBoundingClientRect();
-            }
-            _this.isElementInViewport = viewportRect.bottom >= 0 && viewportRect.right >= 0 && viewportRect.top <= wndH && viewportRect.left <= wndW;
-
-            // stop calculations if item is not in viewport
-            if (force ? false : !_this.isElementInViewport) {
-                return;
-            }
-
-            // calculate parallax helping variables
-            var beforeTop = Math.max(0, contT);
-            var beforeTopEnd = Math.max(0, contH + contT);
-            var afterTop = Math.max(0, -contT);
-            var beforeBottom = Math.max(0, contT + contH - wndH);
-            var beforeBottomEnd = Math.max(0, contH - (contT + contH - wndH));
-            var afterBottom = Math.max(0, -contT + wndH - contH);
-            var fromViewportCenter = 1 - 2 * (wndH - contT) / (wndH + contH);
-
-            // calculate on how percent of section is visible
-            var visiblePercent = 1;
-            if (contH < wndH) {
-                visiblePercent = 1 - (afterTop || beforeBottom) / contH;
-            } else if (beforeTopEnd <= wndH) {
-                visiblePercent = beforeTopEnd / wndH;
-            } else if (beforeBottomEnd <= wndH) {
-                visiblePercent = beforeBottomEnd / wndH;
-            }
-
-            // opacity
-            if (_this.options.type === 'opacity' || _this.options.type === 'scale-opacity' || _this.options.type === 'scroll-opacity') {
-                styles.transform = ''; // empty to add translateZ(0) where it is possible
-                styles.opacity = visiblePercent;
-            }
-
-            // scale
-            if (_this.options.type === 'scale' || _this.options.type === 'scale-opacity') {
-                var scale = 1;
-                if (_this.options.speed < 0) {
-                    scale -= _this.options.speed * visiblePercent;
-                } else {
-                    scale += _this.options.speed * (1 - visiblePercent);
-                }
-                styles.transform = 'scale(' + scale + ')';
-            }
-
-            // scroll
-            if (_this.options.type === 'scroll' || _this.options.type === 'scroll-opacity') {
-                var positionY = _this.parallaxScrollDistance * fromViewportCenter;
-
-                // fix if parallax block in absolute position
-                if (_this.image.position === 'absolute') {
-                    positionY -= contT;
-                }
-
-                styles.transform = 'translateY(' + positionY + 'px)';
-            }
-
-            _this.css(_this.image.$item, styles);
-
-            // call onScroll event
-            if (_this.options.onScroll) {
-                _this.options.onScroll.call(_this, {
-                    section: rect,
-
-                    beforeTop: beforeTop,
-                    beforeTopEnd: beforeTopEnd,
-                    afterTop: afterTop,
-                    beforeBottom: beforeBottom,
-                    beforeBottomEnd: beforeBottomEnd,
-                    afterBottom: afterBottom,
-
-                    visiblePercent: visiblePercent,
-                    fromViewportCenter: fromViewportCenter
-                });
-            }
-        }
-    }, {
-        key: 'onResize',
-        value: function onResize() {
-            this.coverImage();
-            this.clipContainer();
-        }
-    }]);
-
-    return Jarallax;
-}();
-
-// global definition
-
-
-var plugin = function plugin(items) {
-    // check for dom element
-    // thanks: http://stackoverflow.com/questions/384286/javascript-isdom-how-do-you-check-if-a-javascript-object-is-a-dom-object
-    if ((typeof HTMLElement === 'undefined' ? 'undefined' : _typeof(HTMLElement)) === 'object' ? items instanceof HTMLElement : items && (typeof items === 'undefined' ? 'undefined' : _typeof(items)) === 'object' && items !== null && items.nodeType === 1 && typeof items.nodeName === 'string') {
-        items = [items];
-    }
-
-    var options = arguments[1];
-    var args = Array.prototype.slice.call(arguments, 2);
-    var len = items.length;
-    var k = 0;
-    var ret = void 0;
-
-    for (k; k < len; k++) {
-        if ((typeof options === 'undefined' ? 'undefined' : _typeof(options)) === 'object' || typeof options === 'undefined') {
-            if (!items[k].jarallax) {
-                items[k].jarallax = new Jarallax(items[k], options);
-            }
-        } else if (items[k].jarallax) {
-            // eslint-disable-next-line prefer-spread
-            ret = items[k].jarallax[options].apply(items[k].jarallax, args);
-        }
-        if (typeof ret !== 'undefined') {
-            return ret;
-        }
-    }
-
-    return items;
-};
-plugin.constructor = Jarallax;
-
-// no conflict
-var oldPlugin = window.jarallax;
-window.jarallax = plugin;
-window.jarallax.noConflict = function () {
-    window.jarallax = oldPlugin;
-    return this;
-};
-
-// jQuery support
-if (typeof jQuery !== 'undefined') {
-    var jQueryPlugin = function jQueryPlugin() {
-        var args = arguments || [];
-        Array.prototype.unshift.call(args, this);
-        var res = plugin.apply(window, args);
-        return (typeof res === 'undefined' ? 'undefined' : _typeof(res)) !== 'object' ? res : this;
-    };
-    jQueryPlugin.constructor = Jarallax;
-
-    // no conflict
-    var oldJqPlugin = jQuery.fn.jarallax;
-    jQuery.fn.jarallax = jQueryPlugin;
-    jQuery.fn.jarallax.noConflict = function () {
-        jQuery.fn.jarallax = oldJqPlugin;
-        return this;
-    };
-}
-
-// data-jarallax initialization
-addEventListener(window, 'DOMContentLoaded', function () {
-    plugin(document.querySelectorAll('[data-jarallax]'));
-});
-}());
-
+            /***/
+})
+/******/]);
 /*!
  * Name    : Video Worker (wrapper for Youtube, Vimeo and Local videos)
- * Version : 1.9.0
- * Author  : nK <https://nkdev.info>
+ * Version : 1.2.1
+ * Author  : _nK https://nkdev.info
  * GitHub  : https://github.com/nk-o/jarallax
  */
-;(function() {
-'use strict';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Deferred
-// thanks http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
-function Deferred() {
-    this._done = [];
-    this._fail = [];
-}
-Deferred.prototype = {
-    execute: function execute(list, args) {
-        var i = list.length;
-        args = Array.prototype.slice.call(args);
-        while (i--) {
-            list[i].apply(null, args);
-        }
-    },
-    resolve: function resolve() {
-        this.execute(this._done, arguments);
-    },
-    reject: function reject() {
-        this.execute(this._fail, arguments);
-    },
-    done: function done(callback) {
-        this._done.push(callback);
-    },
-    fail: function fail(callback) {
-        this._fail.push(callback);
-    }
-};
-
-// init events
-function addEventListener(el, eventName, handler) {
-    if (el.addEventListener) {
-        el.addEventListener(eventName, handler);
-    } else {
-        el.attachEvent('on' + eventName, function () {
-            handler.call(el);
-        });
-    }
-}
-
-var ID = 0;
-var YoutubeAPIadded = 0;
-var VimeoAPIadded = 0;
-var loadingYoutubePlayer = 0;
-var loadingVimeoPlayer = 0;
-var loadingYoutubeDeffer = new Deferred();
-var loadingVimeoDeffer = new Deferred();
-
-var VideoWorker = function () {
-    function VideoWorker(url, options) {
-        _classCallCheck(this, VideoWorker);
-
-        var _this = this;
-
-        _this.url = url;
-
-        _this.options_default = {
-            autoplay: 1,
-            loop: 1,
-            mute: 1,
-            volume: 0,
-            controls: 0,
-
-            // start / end video time in ms
-            startTime: 0,
-            endTime: 0
-        };
-
-        _this.options = _this.extend({}, _this.options_default, options);
-
-        // check URL
-        _this.videoID = _this.parseURL(url);
-
-        // init
-        if (_this.videoID) {
-            _this.ID = ID++;
-            _this.loadAPI();
-            _this.init();
-        }
-    }
+(function (window) {
+    'use strict';
 
     // Extend like jQuery.extend
-
-
-    _createClass(VideoWorker, [{
-        key: 'extend',
-        value: function extend(out) {
-            var _arguments = arguments;
-
-            out = out || {};
-            Object.keys(arguments).forEach(function (i) {
-                if (!_arguments[i]) {
-                    return;
-                }
-                Object.keys(_arguments[i]).forEach(function (key) {
-                    out[key] = _arguments[i][key];
-                });
-            });
-            return out;
-        }
-    }, {
-        key: 'parseURL',
-        value: function parseURL(url) {
-            // parse youtube ID
-            function getYoutubeID(ytUrl) {
-                // eslint-disable-next-line no-useless-escape
-                var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
-                var match = ytUrl.match(regExp);
-                return match && match[1].length === 11 ? match[1] : false;
+    function extend (out) {
+        out = out || {};
+        for (var i = 1; i < arguments.length; i++) {
+            if (!arguments[i]) {
+                continue;
             }
-
-            // parse vimeo ID
-            function getVimeoID(vmUrl) {
-                // eslint-disable-next-line no-useless-escape
-                var regExp = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
-                var match = vmUrl.match(regExp);
-                return match && match[3] ? match[3] : false;
-            }
-
-            // parse local string
-            function getLocalVideos(locUrl) {
-                // eslint-disable-next-line no-useless-escape
-                var videoFormats = locUrl.split(/,(?=mp4\:|webm\:|ogv\:|ogg\:)/);
-                var result = {};
-                var ready = 0;
-                videoFormats.forEach(function (val) {
-                    // eslint-disable-next-line no-useless-escape
-                    var match = val.match(/^(mp4|webm|ogv|ogg)\:(.*)/);
-                    if (match && match[1] && match[2]) {
-                        result[match[1] === 'ogv' ? 'ogg' : match[1]] = match[2];
-                        ready = 1;
-                    }
-                });
-                return ready ? result : false;
-            }
-
-            var Youtube = getYoutubeID(url);
-            var Vimeo = getVimeoID(url);
-            var Local = getLocalVideos(url);
-
-            if (Youtube) {
-                this.type = 'youtube';
-                return Youtube;
-            } else if (Vimeo) {
-                this.type = 'vimeo';
-                return Vimeo;
-            } else if (Local) {
-                this.type = 'local';
-                return Local;
-            }
-
-            return false;
-        }
-    }, {
-        key: 'isValid',
-        value: function isValid() {
-            return !!this.videoID;
-        }
-
-        // events
-
-    }, {
-        key: 'on',
-        value: function on(name, callback) {
-            this.userEventsList = this.userEventsList || [];
-
-            // add new callback in events list
-            (this.userEventsList[name] || (this.userEventsList[name] = [])).push(callback);
-        }
-    }, {
-        key: 'off',
-        value: function off(name, callback) {
-            var _this2 = this;
-
-            if (!this.userEventsList || !this.userEventsList[name]) {
-                return;
-            }
-
-            if (!callback) {
-                delete this.userEventsList[name];
-            } else {
-                this.userEventsList[name].forEach(function (val, key) {
-                    if (val === callback) {
-                        _this2.userEventsList[name][key] = false;
-                    }
-                });
-            }
-        }
-    }, {
-        key: 'fire',
-        value: function fire(name) {
-            var _this3 = this;
-
-            var args = [].slice.call(arguments, 1);
-            if (this.userEventsList && typeof this.userEventsList[name] !== 'undefined') {
-                this.userEventsList[name].forEach(function (val) {
-                    // call with all arguments
-                    if (val) {
-                        val.apply(_this3, args);
-                    }
-                });
-            }
-        }
-    }, {
-        key: 'play',
-        value: function play(start) {
-            var _this = this;
-            if (!_this.player) {
-                return;
-            }
-
-            if (_this.type === 'youtube' && _this.player.playVideo) {
-                if (typeof start !== 'undefined') {
-                    _this.player.seekTo(start || 0);
-                }
-                if (YT.PlayerState.PLAYING !== _this.player.getPlayerState()) {
-                    _this.player.playVideo();
-                }
-            }
-
-            if (_this.type === 'vimeo') {
-                if (typeof start !== 'undefined') {
-                    _this.player.setCurrentTime(start);
-                }
-                _this.player.getPaused().then(function (paused) {
-                    if (paused) {
-                        _this.player.play();
-                    }
-                });
-            }
-
-            if (_this.type === 'local') {
-                if (typeof start !== 'undefined') {
-                    _this.player.currentTime = start;
-                }
-                if (_this.player.paused) {
-                    _this.player.play();
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    out[key] = arguments[i][key];
                 }
             }
         }
-    }, {
-        key: 'pause',
-        value: function pause() {
-            var _this = this;
-            if (!_this.player) {
-                return;
-            }
-
-            if (_this.type === 'youtube' && _this.player.pauseVideo) {
-                if (YT.PlayerState.PLAYING === _this.player.getPlayerState()) {
-                    _this.player.pauseVideo();
-                }
-            }
-
-            if (_this.type === 'vimeo') {
-                _this.player.getPaused().then(function (paused) {
-                    if (!paused) {
-                        _this.player.pause();
-                    }
-                });
-            }
-
-            if (_this.type === 'local') {
-                if (!_this.player.paused) {
-                    _this.player.pause();
-                }
-            }
-        }
-    }, {
-        key: 'getImageURL',
-        value: function getImageURL(callback) {
-            var _this = this;
-
-            if (_this.videoImage) {
-                callback(_this.videoImage);
-                return;
-            }
-
-            if (_this.type === 'youtube') {
-                var availableSizes = ['maxresdefault', 'sddefault', 'hqdefault', '0'];
-                var step = 0;
-
-                var tempImg = new Image();
-                tempImg.onload = function () {
-                    // if no thumbnail, youtube add their own image with width = 120px
-                    if ((this.naturalWidth || this.width) !== 120 || step === availableSizes.length - 1) {
-                        // ok
-                        _this.videoImage = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
-                        callback(_this.videoImage);
-                    } else {
-                        // try another size
-                        step++;
-                        this.src = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
-                    }
-                };
-                tempImg.src = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
-            }
-
-            if (_this.type === 'vimeo') {
-                var request = new XMLHttpRequest();
-                request.open('GET', 'https://vimeo.com/api/v2/video/' + _this.videoID + '.json', true);
-                request.onreadystatechange = function () {
-                    if (this.readyState === 4) {
-                        if (this.status >= 200 && this.status < 400) {
-                            // Success!
-                            var response = JSON.parse(this.responseText);
-                            _this.videoImage = response[0].thumbnail_large;
-                            callback(_this.videoImage);
-                        } else {
-                            // Error :(
-                        }
-                    }
-                };
-                request.send();
-                request = null;
-            }
-        }
-    }, {
-        key: 'getIframe',
-        value: function getIframe(callback) {
-            var _this = this;
-
-            // return generated iframe
-            if (_this.$iframe) {
-                callback(_this.$iframe);
-                return;
-            }
-
-            // generate new iframe
-            _this.onAPIready(function () {
-                var hiddenDiv = void 0;
-                if (!_this.$iframe) {
-                    hiddenDiv = document.createElement('div');
-                    hiddenDiv.style.display = 'none';
-                }
-
-                // Youtube
-                if (_this.type === 'youtube') {
-                    _this.playerOptions = {};
-                    _this.playerOptions.videoId = _this.videoID;
-                    _this.playerOptions.playerVars = {
-                        autohide: 1,
-                        rel: 0,
-                        autoplay: 0
-                    };
-
-                    // hide controls
-                    if (!_this.options.controls) {
-                        _this.playerOptions.playerVars.iv_load_policy = 3;
-                        _this.playerOptions.playerVars.modestbranding = 1;
-                        _this.playerOptions.playerVars.controls = 0;
-                        _this.playerOptions.playerVars.showinfo = 0;
-                        _this.playerOptions.playerVars.disablekb = 1;
-                    }
-
-                    // events
-                    var ytStarted = void 0;
-                    var ytProgressInterval = void 0;
-                    _this.playerOptions.events = {
-                        onReady: function onReady(e) {
-                            // mute
-                            if (_this.options.mute) {
-                                e.target.mute();
-                            } else if (_this.options.volume) {
-                                e.target.setVolume(_this.options.volume);
-                            }
-
-                            // autoplay
-                            if (_this.options.autoplay) {
-                                _this.play(_this.options.startTime);
-                            }
-                            _this.fire('ready', e);
-                        },
-                        onStateChange: function onStateChange(e) {
-                            // loop
-                            if (_this.options.loop && e.data === YT.PlayerState.ENDED) {
-                                _this.play(_this.options.startTime);
-                            }
-                            if (!ytStarted && e.data === YT.PlayerState.PLAYING) {
-                                ytStarted = 1;
-                                _this.fire('started', e);
-                            }
-                            if (e.data === YT.PlayerState.PLAYING) {
-                                _this.fire('play', e);
-                            }
-                            if (e.data === YT.PlayerState.PAUSED) {
-                                _this.fire('pause', e);
-                            }
-                            if (e.data === YT.PlayerState.ENDED) {
-                                _this.fire('end', e);
-                            }
-
-                            // check for end of video and play again or stop
-                            if (_this.options.endTime) {
-                                if (e.data === YT.PlayerState.PLAYING) {
-                                    ytProgressInterval = setInterval(function () {
-                                        if (_this.options.endTime && _this.player.getCurrentTime() >= _this.options.endTime) {
-                                            if (_this.options.loop) {
-                                                _this.play(_this.options.startTime);
-                                            } else {
-                                                _this.pause();
-                                            }
-                                        }
-                                    }, 150);
-                                } else {
-                                    clearInterval(ytProgressInterval);
-                                }
-                            }
-                        }
-                    };
-
-                    var firstInit = !_this.$iframe;
-                    if (firstInit) {
-                        var div = document.createElement('div');
-                        div.setAttribute('id', _this.playerID);
-                        hiddenDiv.appendChild(div);
-                        document.body.appendChild(hiddenDiv);
-                    }
-                    _this.player = _this.player || new window.YT.Player(_this.playerID, _this.playerOptions);
-                    if (firstInit) {
-                        _this.$iframe = document.getElementById(_this.playerID);
-
-                        // get video width and height
-                        _this.videoWidth = parseInt(_this.$iframe.getAttribute('width'), 10) || 1280;
-                        _this.videoHeight = parseInt(_this.$iframe.getAttribute('height'), 10) || 720;
-                    }
-                }
-
-                // Vimeo
-                if (_this.type === 'vimeo') {
-                    _this.playerOptions = '';
-
-                    _this.playerOptions += 'player_id=' + _this.playerID;
-                    _this.playerOptions += '&autopause=0';
-
-                    // hide controls
-                    if (!_this.options.controls) {
-                        _this.playerOptions += '&badge=0&byline=0&portrait=0&title=0';
-                    }
-
-                    // autoplay
-                    _this.playerOptions += '&autoplay=' + (_this.options.autoplay ? '1' : '0');
-
-                    // loop
-                    _this.playerOptions += '&loop=' + (_this.options.loop ? 1 : 0);
-
-                    if (!_this.$iframe) {
-                        _this.$iframe = document.createElement('iframe');
-                        _this.$iframe.setAttribute('id', _this.playerID);
-                        _this.$iframe.setAttribute('src', 'https://player.vimeo.com/video/' + _this.videoID + '?' + _this.playerOptions);
-                        _this.$iframe.setAttribute('frameborder', '0');
-                        hiddenDiv.appendChild(_this.$iframe);
-                        document.body.appendChild(hiddenDiv);
-                    }
-
-                    _this.player = _this.player || new Vimeo.Player(_this.$iframe);
-
-                    // get video width and height
-                    _this.player.getVideoWidth().then(function (width) {
-                        _this.videoWidth = width || 1280;
-                    });
-                    _this.player.getVideoHeight().then(function (height) {
-                        _this.videoHeight = height || 720;
-                    });
-
-                    // set current time for autoplay
-                    if (_this.options.startTime && _this.options.autoplay) {
-                        _this.player.setCurrentTime(_this.options.startTime);
-                    }
-
-                    // mute
-                    if (_this.options.mute) {
-                        _this.player.setVolume(0);
-                    } else if (_this.options.volume) {
-                        _this.player.setVolume(_this.options.volume);
-                    }
-
-                    var vmStarted = void 0;
-                    _this.player.on('timeupdate', function (e) {
-                        if (!vmStarted) {
-                            _this.fire('started', e);
-                        }
-                        vmStarted = 1;
-
-                        // check for end of video and play again or stop
-                        if (_this.options.endTime) {
-                            if (_this.options.endTime && e.seconds >= _this.options.endTime) {
-                                if (_this.options.loop) {
-                                    _this.play(_this.options.startTime);
-                                } else {
-                                    _this.pause();
-                                }
-                            }
-                        }
-                    });
-                    _this.player.on('play', function (e) {
-                        _this.fire('play', e);
-
-                        // check for the start time and start with it
-                        if (_this.options.startTime && e.seconds === 0) {
-                            _this.play(_this.options.startTime);
-                        }
-                    });
-                    _this.player.on('pause', function (e) {
-                        _this.fire('pause', e);
-                    });
-                    _this.player.on('ended', function (e) {
-                        _this.fire('end', e);
-                    });
-                    _this.player.on('loaded', function (e) {
-                        _this.fire('ready', e);
-                    });
-                }
-
-                // Local
-                function addSourceToLocal(element, src, type) {
-                    var source = document.createElement('source');
-                    source.src = src;
-                    source.type = type;
-                    element.appendChild(source);
-                }
-                if (_this.type === 'local') {
-                    if (!_this.$iframe) {
-                        _this.$iframe = document.createElement('video');
-
-                        // mute
-                        if (_this.options.mute) {
-                            _this.$iframe.muted = true;
-                        } else if (_this.$iframe.volume) {
-                            _this.$iframe.volume = _this.options.volume / 100;
-                        }
-
-                        // loop
-                        if (_this.options.loop) {
-                            _this.$iframe.loop = true;
-                        }
-
-                        _this.$iframe.setAttribute('id', _this.playerID);
-                        hiddenDiv.appendChild(_this.$iframe);
-                        document.body.appendChild(hiddenDiv);
-
-                        Object.keys(_this.videoID).forEach(function (key) {
-                            addSourceToLocal(_this.$iframe, _this.videoID[key], 'video/' + key);
-                        });
-                    }
-
-                    _this.player = _this.player || _this.$iframe;
-
-                    var locStarted = void 0;
-                    addEventListener(_this.player, 'playing', function (e) {
-                        if (!locStarted) {
-                            _this.fire('started', e);
-                        }
-                        locStarted = 1;
-                    });
-                    addEventListener(_this.player, 'timeupdate', function () {
-                        // check for end of video and play again or stop
-                        if (_this.options.endTime) {
-                            if (_this.options.endTime && this.currentTime >= _this.options.endTime) {
-                                if (_this.options.loop) {
-                                    _this.play(_this.options.startTime);
-                                } else {
-                                    _this.pause();
-                                }
-                            }
-                        }
-                    });
-                    addEventListener(_this.player, 'play', function (e) {
-                        _this.fire('play', e);
-                    });
-                    addEventListener(_this.player, 'pause', function (e) {
-                        _this.fire('pause', e);
-                    });
-                    addEventListener(_this.player, 'ended', function (e) {
-                        _this.fire('end', e);
-                    });
-                    addEventListener(_this.player, 'loadedmetadata', function () {
-                        // get video width and height
-                        _this.videoWidth = this.videoWidth || 1280;
-                        _this.videoHeight = this.videoHeight || 720;
-
-                        _this.fire('ready');
-
-                        // autoplay
-                        if (_this.options.autoplay) {
-                            _this.play(_this.options.startTime);
-                        }
-                    });
-                }
-
-                callback(_this.$iframe);
-            });
-        }
-    }, {
-        key: 'init',
-        value: function init() {
-            var _this = this;
-
-            _this.playerID = 'VideoWorker-' + _this.ID;
-        }
-    }, {
-        key: 'loadAPI',
-        value: function loadAPI() {
-            var _this = this;
-
-            if (YoutubeAPIadded && VimeoAPIadded) {
-                return;
-            }
-
-            var src = '';
-
-            // load Youtube API
-            if (_this.type === 'youtube' && !YoutubeAPIadded) {
-                YoutubeAPIadded = 1;
-                src = 'https://www.youtube.com/iframe_api';
-            }
-
-            // load Vimeo API
-            if (_this.type === 'vimeo' && !VimeoAPIadded) {
-                VimeoAPIadded = 1;
-                src = 'https://player.vimeo.com/api/player.js';
-            }
-
-            if (!src) {
-                return;
-            }
-
-            // add script in head section
-            var tag = document.createElement('script');
-            var head = document.getElementsByTagName('head')[0];
-            tag.src = src;
-
-            head.appendChild(tag);
-
-            head = null;
-            tag = null;
-        }
-    }, {
-        key: 'onAPIready',
-        value: function onAPIready(callback) {
-            var _this = this;
-
-            // Youtube
-            if (_this.type === 'youtube') {
-                // Listen for global YT player callback
-                if ((typeof YT === 'undefined' || YT.loaded === 0) && !loadingYoutubePlayer) {
-                    // Prevents Ready event from being called twice
-                    loadingYoutubePlayer = 1;
-
-                    // Creates deferred so, other players know when to wait.
-                    window.onYouTubeIframeAPIReady = function () {
-                        window.onYouTubeIframeAPIReady = null;
-                        loadingYoutubeDeffer.resolve('done');
-                        callback();
-                    };
-                } else if ((typeof YT === 'undefined' ? 'undefined' : _typeof(YT)) === 'object' && YT.loaded === 1) {
-                    callback();
-                } else {
-                    loadingYoutubeDeffer.done(function () {
-                        callback();
-                    });
-                }
-            }
-
-            // Vimeo
-            if (_this.type === 'vimeo') {
-                if (typeof Vimeo === 'undefined' && !loadingVimeoPlayer) {
-                    loadingVimeoPlayer = 1;
-                    var vimeoInterval = setInterval(function () {
-                        if (typeof Vimeo !== 'undefined') {
-                            clearInterval(vimeoInterval);
-                            loadingVimeoDeffer.resolve('done');
-                            callback();
-                        }
-                    }, 20);
-                } else if (typeof Vimeo !== 'undefined') {
-                    callback();
-                } else {
-                    loadingVimeoDeffer.done(function () {
-                        callback();
-                    });
-                }
-            }
-
-            // Local
-            if (_this.type === 'local') {
-                callback();
-            }
-        }
-    }]);
-
-    return VideoWorker;
-}();
-
-window.VideoWorker = VideoWorker;
-
-/*!
- * Name    : Video Background Extension for Jarallax
- * Version : 1.0.0
- * Author  : nK http://nkdev.info
- * GitHub  : https://github.com/nk-o/jarallax
- */
-(function () {
-    if (typeof jarallax === 'undefined') {
-        return;
+        return out;
     }
 
-    var Jarallax = jarallax.constructor;
-
-    // append video after init Jarallax
-    var defInit = Jarallax.prototype.init;
-    Jarallax.prototype.init = function () {
-        var _this = this;
-
-        defInit.apply(_this);
-
-        if (_this.video) {
-            _this.video.getIframe(function (iframe) {
-                var $parent = iframe.parentNode;
-                _this.css(iframe, {
-                    position: _this.image.position,
-                    top: '0px',
-                    left: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    width: '100%',
-                    height: '100%',
-                    maxWidth: 'none',
-                    maxHeight: 'none',
-                    margin: 0,
-                    zIndex: -1
-                });
-                _this.$video = iframe;
-                _this.image.$container.appendChild(iframe);
-
-                // remove parent iframe element (created by VideoWorker)
-                $parent.parentNode.removeChild($parent);
-            });
-        }
-    };
-
-    // cover video
-    var defCoverImage = Jarallax.prototype.coverImage;
-    Jarallax.prototype.coverImage = function () {
-        var _this = this;
-        var imageData = defCoverImage.apply(_this);
-        var node = _this.image.$item.nodeName;
-
-        if (imageData && _this.video && (node === 'IFRAME' || node === 'VIDEO')) {
-            var h = imageData.image.height;
-            var w = h * _this.image.width / _this.image.height;
-            var ml = (imageData.container.width - w) / 2;
-            var mt = imageData.image.marginTop;
-
-            if (imageData.container.width > w) {
-                w = imageData.container.width;
-                h = w * _this.image.height / _this.image.width;
-                ml = 0;
-                mt += (imageData.image.height - h) / 2;
-            }
-
-            // add video height over than need to hide controls
-            if (node === 'IFRAME') {
-                h += 400;
-                mt -= 200;
-            }
-
-            _this.css(_this.$video, {
-                width: w + 'px',
-                marginLeft: ml + 'px',
-                height: h + 'px',
-                marginTop: mt + 'px'
-            });
-        }
-
-        return imageData;
-    };
-
-    // init video
-    var defInitImg = Jarallax.prototype.initImg;
-    Jarallax.prototype.initImg = function () {
-        var _this = this;
-        var defaultResult = defInitImg.apply(_this);
-
-        if (!_this.options.videoSrc) {
-            _this.options.videoSrc = _this.$item.getAttribute('data-jarallax-video') || null;
-        }
-
-        if (_this.options.videoSrc) {
-            _this.defaultInitImgResult = defaultResult;
-            return true;
-        }
-
-        return defaultResult;
-    };
-
-    var defCanInitParallax = Jarallax.prototype.canInitParallax;
-    Jarallax.prototype.canInitParallax = function () {
-        var _this = this;
-        var defaultResult = defCanInitParallax.apply(_this);
-
-        if (!_this.options.videoSrc) {
-            return defaultResult;
-        }
-
-        var video = new VideoWorker(_this.options.videoSrc, {
-            startTime: _this.options.videoStartTime || 0,
-            endTime: _this.options.videoEndTime || 0,
-            mute: _this.options.videoVolume ? 0 : 1,
-            volume: _this.options.videoVolume || 0
-        });
-
-        if (video.isValid()) {
-            // if parallax will not be inited, we can add thumbnail on background.
-            if (!defaultResult) {
-                if (!_this.defaultInitImgResult) {
-                    video.getImageURL(function (url) {
-                        // save default user styles
-                        var curStyle = _this.$item.getAttribute('style');
-                        if (curStyle) {
-                            _this.$item.setAttribute('data-jarallax-original-styles', curStyle);
-                        }
-
-                        // set new background
-                        _this.css(_this.$item, {
-                            'background-image': 'url("' + url + '")',
-                            'background-position': 'center',
-                            'background-size': 'cover'
-                        });
-                    });
-                }
-
-                // init video
-            } else {
-                _this.image.useImgTag = true;
-
-                video.on('ready', function () {
-                    if (_this.options.videoPlayOnlyVisible) {
-                        var oldOnScroll = _this.onScroll;
-                        _this.onScroll = function () {
-                            oldOnScroll.apply(_this);
-                            if (_this.isVisible()) {
-                                video.play();
-                            } else {
-                                video.pause();
-                            }
-                        };
-                    } else {
-                        video.play();
-                    }
-                });
-
-                video.on('started', function () {
-                    _this.image.$default_item = _this.image.$item;
-                    _this.image.$item = _this.$video;
-
-                    // set video width and height
-                    _this.image.width = _this.video.videoWidth || 1280;
-                    _this.image.height = _this.video.videoHeight || 720;
-                    _this.options.imgWidth = _this.image.width;
-                    _this.options.imgHeight = _this.image.height;
-                    _this.coverImage();
-                    _this.clipContainer();
-                    _this.onScroll();
-
-                    // hide image
-                    if (_this.image.$default_item) {
-                        _this.image.$default_item.style.display = 'none';
-                    }
-                });
-
-                _this.video = video;
-
-                // set image if not exists
-                if (!_this.defaultInitImgResult) {
-                    if (video.type !== 'local') {
-                        video.getImageURL(function (url) {
-                            _this.image.src = url;
-                            _this.init();
-                        });
-
-                        return false;
-                    }
-
-                    // set empty image on local video if not defined
-                    _this.image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                    return true;
-                }
-            }
-        }
-
-        return defaultResult;
-    };
-
-    // Destroy video parallax
-    var defDestroy = Jarallax.prototype.destroy;
-    Jarallax.prototype.destroy = function () {
-        var _this = this;
-
-        if (_this.image.$default_item) {
-            _this.image.$item = _this.image.$default_item;
-            delete _this.image.$default_item;
-        }
-
-        defDestroy.apply(_this);
-    };
-
-    // data-jarallax-video initialization
-    addEventListener(window, 'DOMContentLoaded', function () {
-        jarallax(document.querySelectorAll('[data-jarallax-video]'));
-    });
-})();
-}());
-
-;(function() {
-'use strict';
-
-/*!
- * Name    : Elements Extension for Jarallax
- * Version : 1.0.0
- * Author  : nK http://nkdev.info
- * GitHub  : https://github.com/nk-o/jarallax
- */
-(function () {
-    if (typeof jarallax === 'undefined') {
-        return;
+    // Deferred
+    // thanks http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
+    function Deferred () {
+        this._done = [];
+        this._fail = [];
     }
+    Deferred.prototype = {
+        execute: function (list, args) {
+            var i = list.length;
+            args = Array.prototype.slice.call(args);
+            while(i--) {
+                list[i].apply(null, args);
+            }
+        },
+        resolve: function () {
+            this.execute(this._done, arguments);
+        },
+        reject: function () {
+            this.execute(this._fail, arguments);
+        },
+        done: function (callback) {
+            this._done.push(callback);
+        },
+        fail: function (callback) {
+            this._fail.push(callback);
+        }
+    };
 
     // init events
-    function addEventListener(el, eventName, handler) {
+    function addEventListener (el, eventName, handler) {
         if (el.addEventListener) {
             el.addEventListener(eventName, handler);
         } else {
-            el.attachEvent('on' + eventName, function () {
+            el.attachEvent('on' + eventName, function (){
                 handler.call(el);
             });
         }
     }
 
-    var Jarallax = jarallax.constructor;
+    var VideoWorker = (function () {
+        var ID = 0;
 
-    // redefine default methods
-    ['initImg', 'canInitParallax', 'init', 'destroy', 'clipContainer', 'coverImage', 'isVisible', 'onScroll', 'onResize'].forEach(function (key) {
-        var def = Jarallax.prototype[key];
-        Jarallax.prototype[key] = function () {
+        function VideoWorker_inner (url, options) {
             var _this = this;
-            var args = arguments || [];
 
-            if (key === 'initImg' && _this.$item.getAttribute('data-jarallax-element') !== null) {
-                _this.options.type = 'element';
-                _this.pureOptions.speed = _this.$item.getAttribute('data-jarallax-element') || _this.pureOptions.speed;
+            _this.url = url;
+
+            _this.options_default = {
+                autoplay: 1,
+                loop: 1,
+                mute: 1,
+                controls: 0,
+
+                // start / end video time in ms
+                startTime: 0,
+                endTime: 0
+            };
+
+            _this.options = extend({}, _this.options_default, options);
+
+            // check URL
+            _this.videoID = _this.parseURL(url);
+
+            // init
+            if(_this.videoID) {
+                _this.ID = ID++;
+                _this.loadAPI();
+                _this.init();
             }
-            if (_this.options.type !== 'element') {
-                return def.apply(_this, args);
+        }
+
+        return VideoWorker_inner;
+    }());
+
+    VideoWorker.prototype.parseURL = function (url) {
+        // parse youtube ID
+        function getYoutubeID (ytUrl) {
+            var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+            var match = ytUrl.match(regExp);
+            return match && match[1].length === 11 ? match[1] : false;
+        }
+
+        // parse vimeo ID
+        function getVimeoID (vmUrl) {
+            var regExp = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+            var match = vmUrl.match(regExp);
+            return match && match[3] ? match[3] : false;
+        }
+
+        // parse local string
+        function getLocalVideos (locUrl) {
+            var videoFormats = locUrl.split(/,(?=mp4\:|webm\:|ogv\:|ogg\:)/);
+            var result = {};
+            var ready = 0;
+            for(var k = 0; k < videoFormats.length; k++) {
+                var match = videoFormats[k].match(/^(mp4|webm|ogv|ogg)\:(.*)/);
+                if(match && match[1] && match[2]) {
+                    result[match[1] === 'ogv' ? 'ogg' : match[1]] = match[2];
+                    ready = 1;
+                }
+            }
+            return ready ? result : false;
+        }
+
+        var Youtube = getYoutubeID(url);
+        var Vimeo = getVimeoID(url);
+        var Local = getLocalVideos(url);
+
+        if(Youtube) {
+            this.type = 'youtube';
+            return Youtube;
+        } else if (Vimeo) {
+            this.type = 'vimeo';
+            return Vimeo;
+        } else if (Local) {
+            this.type = 'local';
+            return Local;
+        }
+
+        return false;
+    };
+
+    VideoWorker.prototype.isValid = function () {
+        return !!this.videoID;
+    };
+
+    // events
+    VideoWorker.prototype.on = function (name, callback) {
+        this.userEventsList = this.userEventsList || [];
+
+        // add new callback in events list
+        (this.userEventsList[name] || (this.userEventsList[name] = [])).push(callback);
+    };
+    VideoWorker.prototype.off = function (name, callback) {
+        if(!this.userEventsList || !this.userEventsList[name]) {
+            return;
+        }
+
+        if(!callback) {
+            delete this.userEventsList[name];
+        } else {
+            for(var k = 0; k < this.userEventsList[name].length; k++) {
+                if(this.userEventsList[name][k] === callback) {
+                    this.userEventsList[name][k] = false;
+                }
+            }
+        }
+    };
+    VideoWorker.prototype.fire = function (name) {
+        var args = [].slice.call(arguments, 1);
+        if(this.userEventsList && typeof this.userEventsList[name] !== 'undefined') {
+            for(var k in this.userEventsList[name]) {
+                // call with all arguments
+                if(this.userEventsList[name][k]) {
+                    this.userEventsList[name][k].apply(this, args);
+                }
+            }
+        }
+    };
+
+    VideoWorker.prototype.play = function (start) {
+        var _this = this;
+        if(!_this.player) {
+            return;
+        }
+
+        if(_this.type === 'youtube' && _this.player.playVideo) {
+            if(typeof start !== 'undefined') {
+                _this.player.seekTo(start || 0);
+            }
+            _this.player.playVideo();
+        }
+
+        if(_this.type === 'vimeo') {
+            if (typeof start !== 'undefined') {
+                _this.player.setCurrentTime(start);
+            }
+            _this.player.getPaused().then(function(paused) {
+                if (paused) {
+                    _this.player.play();
+                }
+            });
+        }
+
+        if(_this.type === 'local') {
+            if(typeof start !== 'undefined') {
+                _this.player.currentTime = start;
+            }
+            _this.player.play();
+        }
+    };
+
+    VideoWorker.prototype.pause = function () {
+        if(!this.player) {
+            return;
+        }
+
+        if(this.type === 'youtube' && this.player.pauseVideo) {
+            this.player.pauseVideo();
+        }
+
+        if(this.type === 'vimeo') {
+            this.player.pause();
+        }
+
+        if(this.type === 'local') {
+            this.player.pause();
+        }
+    };
+
+    VideoWorker.prototype.getImageURL = function (callback) {
+        var _this = this;
+
+        if(_this.videoImage) {
+            callback(_this.videoImage);
+            return;
+        }
+
+        if(_this.type === 'youtube') {
+            var availableSizes = [
+                'maxresdefault',
+                'sddefault',
+                'hqdefault',
+                '0'
+            ];
+            var step = 0;
+
+            var tempImg = new Image();
+            tempImg.onload = function () {
+                // if no thumbnail, youtube add their own image with width = 120px
+                if ((this.naturalWidth || this.width) !== 120 || step === availableSizes.length - 1) {
+                    // ok
+                    _this.videoImage = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
+                    callback(_this.videoImage);
+                } else {
+                    // try another size
+                    step++;
+                    this.src = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
+                }
+            };
+            tempImg.src = 'https://img.youtube.com/vi/' + _this.videoID + '/' + availableSizes[step] + '.jpg';
+        }
+
+        if(_this.type === 'vimeo') {
+            var request = new XMLHttpRequest();
+            request.open('GET', 'https://vimeo.com/api/v2/video/' + _this.videoID + '.json', true);
+            request.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    if (this.status >= 200 && this.status < 400) {
+                        // Success!
+                        var response = JSON.parse(this.responseText);
+                        _this.videoImage = response[0].thumbnail_large;
+                        callback(_this.videoImage);
+                    } else {
+                        // Error :(
+                    }
+                }
+            };
+            request.send();
+            request = null;
+        }
+    };
+
+    VideoWorker.prototype.getIframe = function (callback) {
+        var _this = this;
+
+        // return generated iframe
+        if(_this.$iframe) {
+            callback(_this.$iframe);
+            return;
+        }
+
+        // generate new iframe
+        _this.onAPIready(function () {
+            var hiddenDiv;
+            if(!_this.$iframe) {
+                hiddenDiv = document.createElement('div');
+                hiddenDiv.style.display = 'none';
             }
 
-            switch (key) {
-                case 'init':
-                    _this.options.speed = parseFloat(_this.pureOptions.speed) || 0;
-                    _this.onResize();
-                    _this.onScroll();
-                    _this.addToParallaxList();
-                    break;
-                case 'onResize':
-                    var defTransform = _this.css(_this.$item, 'transform');
-                    _this.css(_this.$item, { transform: '' });
-                    var rect = _this.$item.getBoundingClientRect();
-                    _this.itemData = {
-                        width: rect.width,
-                        height: rect.height,
-                        y: rect.top + _this.getWindowData().y,
-                        x: rect.left
+            // Youtube
+            if(_this.type === 'youtube') {
+                _this.playerOptions = {};
+                _this.playerOptions.videoId = _this.videoID;
+                _this.playerOptions.playerVars = {
+                    autohide: 1,
+                    rel: 0,
+                    autoplay: 0
+                };
+
+                // hide controls
+                if(!_this.options.controls) {
+                    _this.playerOptions.playerVars.iv_load_policy = 3;
+                    _this.playerOptions.playerVars.modestbranding = 1;
+                    _this.playerOptions.playerVars.controls = 0;
+                    _this.playerOptions.playerVars.showinfo = 0;
+                    _this.playerOptions.playerVars.disablekb = 1;
+                }
+
+                // events
+                var ytStarted;
+                var ytProgressInterval;
+                _this.playerOptions.events = {
+                    onReady: function (e) {
+                        // mute
+                        if(_this.options.mute) {
+                            e.target.mute();
+                        }
+                        // autoplay
+                        if(_this.options.autoplay) {
+                            _this.play(_this.options.startTime);
+                        }
+                        _this.fire('ready', e);
+                    },
+                    onStateChange: function (e) {
+                        // loop
+                        if(_this.options.loop && e.data === YT.PlayerState.ENDED) {
+                            _this.play(_this.options.startTime);
+                        }
+                        if(!ytStarted && e.data === YT.PlayerState.PLAYING) {
+                            ytStarted = 1;
+                            _this.fire('started', e);
+                        }
+                        if(e.data === YT.PlayerState.PLAYING) {
+                            _this.fire('play', e);
+                        }
+                        if(e.data === YT.PlayerState.PAUSED) {
+                            _this.fire('pause', e);
+                        }
+                        if(e.data === YT.PlayerState.ENDED) {
+                            _this.fire('end', e);
+                        }
+
+                        // check for end of video and play again or stop
+                        if(_this.options.endTime) {
+                            if(e.data === YT.PlayerState.PLAYING) {
+                                ytProgressInterval = setInterval(function () {
+                                    if(_this.options.endTime && _this.player.getCurrentTime() >= _this.options.endTime) {
+                                        if(_this.options.loop) {
+                                            _this.play(_this.options.startTime);
+                                        } else {
+                                            _this.pause();
+                                        }
+                                    }
+                                }, 150);
+                            } else {
+                                clearInterval(ytProgressInterval);
+                            }
+                        }
+                    }
+                };
+
+                var firstInit = !_this.$iframe;
+                if(firstInit) {
+                    var div = document.createElement('div');
+                    div.setAttribute('id', _this.playerID);
+                    hiddenDiv.appendChild(div);
+                    document.body.appendChild(hiddenDiv);
+                }
+                _this.player = _this.player || new window.YT.Player(_this.playerID, _this.playerOptions);
+                if(firstInit) {
+                    _this.$iframe = document.getElementById(_this.playerID);
+
+                    // get video width and height
+                    _this.videoWidth = parseInt(_this.$iframe.getAttribute('width'), 10) || 1280;
+                    _this.videoHeight = parseInt(_this.$iframe.getAttribute('height'), 10) || 720;
+                }
+            }
+
+            // Vimeo
+            if(_this.type === 'vimeo') {
+                _this.playerOptions = '';
+
+                _this.playerOptions += 'player_id=' + _this.playerID;
+                _this.playerOptions += '&autopause=0';
+
+                // hide controls
+                if(!_this.options.controls) {
+                    _this.playerOptions += '&badge=0&byline=0&portrait=0&title=0';
+                }
+
+                // autoplay
+                _this.playerOptions += '&autoplay=' + (_this.options.autoplay ? '1' : '0');
+
+                // loop
+                _this.playerOptions += '&loop=' + (_this.options.loop ? 1 : 0);
+
+                if(!_this.$iframe) {
+                    _this.$iframe = document.createElement('iframe');
+                    _this.$iframe.setAttribute('id', _this.playerID);
+                    _this.$iframe.setAttribute('src', 'https://player.vimeo.com/video/' + _this.videoID + '?' + _this.playerOptions);
+                    _this.$iframe.setAttribute('frameborder', '0');
+                    hiddenDiv.appendChild(_this.$iframe);
+                    document.body.appendChild(hiddenDiv);
+                }
+
+                _this.player = _this.player || new Vimeo.Player(_this.$iframe);
+
+                // get video width and height
+                _this.player.getVideoWidth().then(function (width) {
+                    _this.videoWidth = width || 1280;
+                });
+                _this.player.getVideoHeight().then(function (height) {
+                    _this.videoHeight = height || 720;
+                });
+
+                // mute
+                _this.player.setVolume(_this.options.mute ? 0 : 100);
+
+                var vmStarted;
+                _this.player.on('timeupdate', function (e) {
+                    if(!vmStarted) {
+                        _this.fire('started', e);
+                    }
+                    vmStarted = 1;
+
+                    // check for end of video and play again or stop
+                    if(_this.options.endTime) {
+                        if(_this.options.endTime && e.seconds >= _this.options.endTime) {
+                            if(_this.options.loop) {
+                                _this.play(_this.options.startTime);
+                            } else {
+                                _this.pause();
+                            }
+                        }
+                    }
+                });
+                _this.player.on('play', function (e) {
+                    _this.fire('play', e);
+
+                    // check for the start time and start with it
+                    if(_this.options.startTime && e.seconds === 0) {
+                        _this.play(_this.options.startTime);
+                    }
+                });
+                _this.player.on('pause', function (e) {
+                    _this.fire('pause', e);
+                });
+                _this.player.on('ended', function (e) {
+                    _this.fire('end', e);
+                });
+                _this.player.on('loaded', function (e) {
+                    _this.fire('ready', e);
+                });
+            }
+
+            // Local
+            function addSourceToLocal (element, src, type) {
+                var source = document.createElement('source');
+                source.src = src;
+                source.type = type;
+                element.appendChild(source);
+            }
+            if(_this.type === 'local') {
+                if(!_this.$iframe) {
+                    _this.$iframe = document.createElement('video');
+
+                    // mute
+                    if(_this.options.mute) {
+                        _this.$iframe.muted = true;
+                    }
+
+                    // loop
+                    if(_this.options.loop) {
+                        _this.$iframe.loop = true;
+                    }
+
+                    _this.$iframe.setAttribute('id', _this.playerID);
+                    hiddenDiv.appendChild(_this.$iframe);
+                    document.body.appendChild(hiddenDiv);
+
+                    for(var k in _this.videoID) {
+                        addSourceToLocal(_this.$iframe, _this.videoID[k], 'video/' + k);
+                    }
+                }
+
+                _this.player = _this.player || _this.$iframe;
+
+                var locStarted;
+                addEventListener(_this.player, 'playing', function (e) {
+                    if(!locStarted) {
+                        _this.fire('started', e);
+                    }
+                    locStarted = 1;
+                });
+                addEventListener(_this.player, 'timeupdate', function () {
+                    // check for end of video and play again or stop
+                    if(_this.options.endTime) {
+                        if(_this.options.endTime && this.currentTime >= _this.options.endTime) {
+                            if(_this.options.loop) {
+                                _this.play(_this.options.startTime);
+                            } else {
+                                _this.pause();
+                            }
+                        }
+                    }
+                });
+                addEventListener(_this.player, 'play', function (e) {
+                    _this.fire('play', e);
+                });
+                addEventListener(_this.player, 'pause', function (e) {
+                    _this.fire('pause', e);
+                });
+                addEventListener(_this.player, 'ended', function (e) {
+                    _this.fire('end', e);
+                });
+                addEventListener(_this.player, 'loadedmetadata', function () {
+                    // get video width and height
+                    _this.videoWidth = this.videoWidth || 1280;
+                    _this.videoHeight = this.videoHeight || 720;
+
+                    _this.fire('ready');
+
+                    // autoplay
+                    if(_this.options.autoplay) {
+                        _this.play(_this.options.startTime);
+                    }
+                });
+            }
+
+            callback(_this.$iframe);
+        });
+    };
+
+    VideoWorker.prototype.init = function () {
+        var _this = this;
+
+        _this.playerID = 'VideoWorker-' + _this.ID;
+    };
+
+    var YoutubeAPIadded = 0;
+    var VimeoAPIadded = 0;
+    VideoWorker.prototype.loadAPI = function () {
+        var _this = this;
+
+        if(YoutubeAPIadded && VimeoAPIadded) {
+            return;
+        }
+
+        var src = '';
+
+        // load Youtube API
+        if(_this.type === 'youtube' && !YoutubeAPIadded) {
+            YoutubeAPIadded = 1;
+            src = '//www.youtube.com/iframe_api';
+        }
+
+        // load Vimeo API
+        if(_this.type === 'vimeo' && !VimeoAPIadded) {
+            VimeoAPIadded = 1;
+            src = '//player.vimeo.com/api/player.js';
+        }
+
+        if(!src) {
+            return;
+        }
+
+        if (window.location.origin === 'file://') {
+            src = 'http:' + src;
+        }
+
+        // add script in head section
+        var tag = document.createElement('script');
+        var head = document.getElementsByTagName('head')[0];
+        tag.src = src;
+
+        head.appendChild(tag);
+
+        head = null;
+        tag = null;
+    };
+
+    var loadingYoutubePlayer = 0;
+    var loadingVimeoPlayer = 0;
+    var loadingYoutubeDeffer = new Deferred();
+    var loadingVimeoDeffer = new Deferred();
+    VideoWorker.prototype.onAPIready = function (callback) {
+        var _this = this;
+
+        // Youtube
+        if(_this.type === 'youtube') {
+            // Listen for global YT player callback
+            if ((typeof YT === 'undefined' || YT.loaded === 0) && !loadingYoutubePlayer) {
+                // Prevents Ready event from being called twice
+                loadingYoutubePlayer = 1;
+
+                // Creates deferred so, other players know when to wait.
+                window.onYouTubeIframeAPIReady = function () {
+                    window.onYouTubeIframeAPIReady = null;
+                    loadingYoutubeDeffer.resolve('done');
+                    callback();
+                };
+            } else if (typeof YT === 'object' && YT.loaded === 1)  {
+                callback();
+            } else {
+                loadingYoutubeDeffer.done(function () {
+                    callback();
+                });
+            }
+        }
+
+        // Vimeo
+        if(_this.type === 'vimeo') {
+            if(typeof Vimeo === 'undefined' && !loadingVimeoPlayer) {
+                loadingVimeoPlayer = 1;
+                var vimeo_interval = setInterval(function () {
+                    if(typeof Vimeo !== 'undefined') {
+                        clearInterval(vimeo_interval);
+                        loadingVimeoDeffer.resolve('done');
+                        callback();
+                    }
+                }, 20);
+            } else if (typeof Vimeo !== 'undefined') {
+                callback();
+            } else {
+                loadingVimeoDeffer.done(function () {
+                    callback();
+                });
+            }
+        }
+
+        // Local
+        if(_this.type === 'local') {
+            callback();
+        }
+    };
+
+    window.VideoWorker = VideoWorker;
+}(window));
+
+/*!
+ * Name    : Video Background Extension for Jarallax
+ * Version : 1.0.1
+ * Author  : nK <https://nkdev.info>
+ * GitHub  : https://github.com/nk-o/jarallax
+ */
+/******/ (function (modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if (installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+            /******/
+}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+            /******/
+};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+        /******/
+}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function (exports, name, getter) {
+/******/ 		if (!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+                /******/
+});
+            /******/
+}
+        /******/
+};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function (module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+        /******/
+};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function (object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+    /******/
+})
+/************************************************************************/
+/******/([
+/* 0 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+/* WEBPACK VAR INJECTION */(function (global) {
+
+                var win;
+
+                if (typeof window !== "undefined") {
+                    win = window;
+                } else if (typeof global !== "undefined") {
+                    win = global;
+                } else if (typeof self !== "undefined") {
+                    win = self;
+                } else {
+                    win = {};
+                }
+
+                module.exports = win;
+                /* WEBPACK VAR INJECTION */
+}.call(exports, __webpack_require__(2)))
+
+            /***/
+}),
+/* 1 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            module.exports = function (callback) {
+
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    // Already ready or interactive, execute callback
+                    callback.call();
+                } else if (document.attachEvent) {
+                    // Old browsers
+                    document.attachEvent('onreadystatechange', function () {
+                        if (document.readyState === 'interactive') callback.call();
+                    });
+                } else if (document.addEventListener) {
+                    // Modern browsers
+                    document.addEventListener('DOMContentLoaded', callback);
+                }
+            };
+
+            /***/
+}),
+/* 2 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+            var g;
+
+            // This works in non-strict mode
+            g = function () {
+                return this;
+            }();
+
+            try {
+                // This works if eval is allowed (see CSP)
+                g = g || Function("return this")() || (1, eval)("this");
+            } catch (e) {
+                // This works if the window reference is available
+                if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+            }
+
+            // g can still be undefined, but nothing to do about it...
+            // We return undefined, instead of nothing here, so it's
+            // easier to handle this case. if(!global) { ...}
+
+            module.exports = g;
+
+            /***/
+}),
+/* 3 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            module.exports = __webpack_require__(9);
+
+            /***/
+}),
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            module.exports = __webpack_require__(8);
+
+
+            /***/
+}),
+/* 8 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            var _videoWorker = __webpack_require__(3);
+
+            var _videoWorker2 = _interopRequireDefault(_videoWorker);
+
+            var _global = __webpack_require__(0);
+
+            var _global2 = _interopRequireDefault(_global);
+
+            var _liteReady = __webpack_require__(1);
+
+            var _liteReady2 = _interopRequireDefault(_liteReady);
+
+            var _jarallaxVideo = __webpack_require__(10);
+
+            var _jarallaxVideo2 = _interopRequireDefault(_jarallaxVideo);
+
+            function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+            // add video worker globally to fallback jarallax < 1.10 versions
+            _global2.default.VideoWorker = _global2.default.VideoWorker || _videoWorker2.default;
+
+            (0, _jarallaxVideo2.default)();
+
+            // data-jarallax-video initialization
+            (0, _liteReady2.default)(function () {
+                if (typeof jarallax !== 'undefined') {
+                    jarallax(document.querySelectorAll('[data-jarallax-video]'));
+                }
+            });
+
+            /***/
+}),
+/* 9 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+
+            var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+            var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+            function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+            // Deferred
+            // thanks http://stackoverflow.com/questions/18096715/implement-deferred-object-without-using-jquery
+            function Deferred() {
+                this._done = [];
+                this._fail = [];
+            }
+            Deferred.prototype = {
+                execute: function execute(list, args) {
+                    var i = list.length;
+                    args = Array.prototype.slice.call(args);
+                    while (i--) {
+                        list[i].apply(null, args);
+                    }
+                },
+                resolve: function resolve() {
+                    this.execute(this._done, arguments);
+                },
+                reject: function reject() {
+                    this.execute(this._fail, arguments);
+                },
+                done: function done(callback) {
+                    this._done.push(callback);
+                },
+                fail: function fail(callback) {
+                    this._fail.push(callback);
+                }
+            };
+
+            var ID = 0;
+            var YoutubeAPIadded = 0;
+            var VimeoAPIadded = 0;
+            var loadingYoutubePlayer = 0;
+            var loadingVimeoPlayer = 0;
+            var loadingYoutubeDefer = new Deferred();
+            var loadingVimeoDefer = new Deferred();
+
+            var VideoWorker = function () {
+                function VideoWorker(url, options) {
+                    _classCallCheck(this, VideoWorker);
+
+                    var self = this;
+
+                    self.url = url;
+
+                    self.options_default = {
+                        autoplay: false,
+                        loop: false,
+                        mute: false,
+                        volume: 100,
+                        showContols: true,
+
+                        // start / end video time in seconds
+                        startTime: 0,
+                        endTime: 0
                     };
-                    _this.css(_this.$item, { transform: defTransform });
-                    break;
-                case 'onScroll':
-                    var wnd = _this.getWindowData();
-                    var centerPercent = (wnd.y + wnd.height / 2 - _this.itemData.y) / (wnd.height / 2);
-                    var move = centerPercent * _this.options.speed;
-                    _this.css(_this.$item, { transform: 'translateY(' + move + 'px)' });
-                    break;
-                case 'initImg':
-                case 'isVisible':
-                case 'clipContainer':
-                case 'coverImage':
-                    return true;
-                default:
-                    return def.apply(_this, args);
-            }
-        };
-    });
 
-    // data-jarallax-element initialization
-    addEventListener(window, 'DOMContentLoaded', function () {
-        jarallax(document.querySelectorAll('[data-jarallax-element]'));
-    });
-})();
-}());
+                    self.options = self.extend({}, self.options_default, options);
+
+                    // check URL
+                    self.videoID = self.parseURL(url);
+
+                    // init
+                    if (self.videoID) {
+                        self.ID = ID++;
+                        self.loadAPI();
+                        self.init();
+                    }
+                }
+
+                // Extend like jQuery.extend
+
+
+                _createClass(VideoWorker, [{
+                    key: 'extend',
+                    value: function extend(out) {
+                        var _arguments = arguments;
+
+                        out = out || {};
+                        Object.keys(arguments).forEach(function (i) {
+                            if (!_arguments[i]) {
+                                return;
+                            }
+                            Object.keys(_arguments[i]).forEach(function (key) {
+                                out[key] = _arguments[i][key];
+                            });
+                        });
+                        return out;
+                    }
+                }, {
+                    key: 'parseURL',
+                    value: function parseURL(url) {
+                        // parse youtube ID
+                        function getYoutubeID(ytUrl) {
+                            // eslint-disable-next-line no-useless-escape
+                            var regExp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/;
+                            var match = ytUrl.match(regExp);
+                            return match && match[1].length === 11 ? match[1] : false;
+                        }
+
+                        // parse vimeo ID
+                        function getVimeoID(vmUrl) {
+                            // eslint-disable-next-line no-useless-escape
+                            var regExp = /https?:\/\/(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|video\/|)(\d+)(?:$|\/|\?)/;
+                            var match = vmUrl.match(regExp);
+                            return match && match[3] ? match[3] : false;
+                        }
+
+                        // parse local string
+                        function getLocalVideos(locUrl) {
+                            // eslint-disable-next-line no-useless-escape
+                            var videoFormats = locUrl.split(/,(?=mp4\:|webm\:|ogv\:|ogg\:)/);
+                            var result = {};
+                            var ready = 0;
+                            videoFormats.forEach(function (val) {
+                                // eslint-disable-next-line no-useless-escape
+                                var match = val.match(/^(mp4|webm|ogv|ogg)\:(.*)/);
+                                if (match && match[1] && match[2]) {
+                                    // eslint-disable-next-line prefer-destructuring
+                                    result[match[1] === 'ogv' ? 'ogg' : match[1]] = match[2];
+                                    ready = 1;
+                                }
+                            });
+                            return ready ? result : false;
+                        }
+
+                        var Youtube = getYoutubeID(url);
+                        var Vimeo = getVimeoID(url);
+                        var Local = getLocalVideos(url);
+
+                        if (Youtube) {
+                            this.type = 'youtube';
+                            return Youtube;
+                        } else if (Vimeo) {
+                            this.type = 'vimeo';
+                            return Vimeo;
+                        } else if (Local) {
+                            this.type = 'local';
+                            return Local;
+                        }
+
+                        return false;
+                    }
+                }, {
+                    key: 'isValid',
+                    value: function isValid() {
+                        return !!this.videoID;
+                    }
+
+                    // events
+
+                }, {
+                    key: 'on',
+                    value: function on(name, callback) {
+                        this.userEventsList = this.userEventsList || [];
+
+                        // add new callback in events list
+                        (this.userEventsList[name] || (this.userEventsList[name] = [])).push(callback);
+                    }
+                }, {
+                    key: 'off',
+                    value: function off(name, callback) {
+                        var _this = this;
+
+                        if (!this.userEventsList || !this.userEventsList[name]) {
+                            return;
+                        }
+
+                        if (!callback) {
+                            delete this.userEventsList[name];
+                        } else {
+                            this.userEventsList[name].forEach(function (val, key) {
+                                if (val === callback) {
+                                    _this.userEventsList[name][key] = false;
+                                }
+                            });
+                        }
+                    }
+                }, {
+                    key: 'fire',
+                    value: function fire(name) {
+                        var _this2 = this;
+
+                        var args = [].slice.call(arguments, 1);
+                        if (this.userEventsList && typeof this.userEventsList[name] !== 'undefined') {
+                            this.userEventsList[name].forEach(function (val) {
+                                // call with all arguments
+                                if (val) {
+                                    val.apply(_this2, args);
+                                }
+                            });
+                        }
+                    }
+                }, {
+                    key: 'play',
+                    value: function play(start) {
+                        var self = this;
+                        if (!self.player) {
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.playVideo) {
+                            if (typeof start !== 'undefined') {
+                                self.player.seekTo(start || 0);
+                            }
+                            if (YT.PlayerState.PLAYING !== self.player.getPlayerState()) {
+                                self.player.playVideo();
+                            }
+                        }
+
+                        if (self.type === 'vimeo') {
+                            if (typeof start !== 'undefined') {
+                                self.player.setCurrentTime(start);
+                            }
+                            self.player.getPaused().then(function (paused) {
+                                if (paused) {
+                                    self.player.play();
+                                }
+                            });
+                        }
+
+                        if (self.type === 'local') {
+                            if (typeof start !== 'undefined') {
+                                self.player.currentTime = start;
+                            }
+                            if (self.player.paused) {
+                                self.player.play();
+                            }
+                        }
+                    }
+                }, {
+                    key: 'pause',
+                    value: function pause() {
+                        var self = this;
+                        if (!self.player) {
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.pauseVideo) {
+                            if (YT.PlayerState.PLAYING === self.player.getPlayerState()) {
+                                self.player.pauseVideo();
+                            }
+                        }
+
+                        if (self.type === 'vimeo') {
+                            self.player.getPaused().then(function (paused) {
+                                if (!paused) {
+                                    self.player.pause();
+                                }
+                            });
+                        }
+
+                        if (self.type === 'local') {
+                            if (!self.player.paused) {
+                                self.player.pause();
+                            }
+                        }
+                    }
+                }, {
+                    key: 'mute',
+                    value: function mute() {
+                        var self = this;
+                        if (!self.player) {
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.mute) {
+                            self.player.mute();
+                        }
+
+                        if (self.type === 'vimeo' && self.player.setVolume) {
+                            self.player.setVolume(0);
+                        }
+
+                        if (self.type === 'local') {
+                            self.$video.muted = true;
+                        }
+                    }
+                }, {
+                    key: 'unmute',
+                    value: function unmute() {
+                        var self = this;
+                        if (!self.player) {
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.mute) {
+                            self.player.unMute();
+                        }
+
+                        if (self.type === 'vimeo' && self.player.setVolume) {
+                            self.player.setVolume(self.options.volume);
+                        }
+
+                        if (self.type === 'local') {
+                            self.$video.muted = false;
+                        }
+                    }
+                }, {
+                    key: 'setVolume',
+                    value: function setVolume() {
+                        var volume = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+                        var self = this;
+                        if (!self.player || !volume) {
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.setVolume) {
+                            self.player.setVolume(volume);
+                        }
+
+                        if (self.type === 'vimeo' && self.player.setVolume) {
+                            self.player.setVolume(volume);
+                        }
+
+                        if (self.type === 'local') {
+                            self.$video.volume = volume / 100;
+                        }
+                    }
+                }, {
+                    key: 'getVolume',
+                    value: function getVolume(callback) {
+                        var self = this;
+                        if (!self.player) {
+                            callback(false);
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.getVolume) {
+                            callback(self.player.getVolume());
+                        }
+
+                        if (self.type === 'vimeo' && self.player.getVolume) {
+                            self.player.getVolume().then(function (volume) {
+                                callback(volume);
+                            });
+                        }
+
+                        if (self.type === 'local') {
+                            callback(self.$video.volume * 100);
+                        }
+                    }
+                }, {
+                    key: 'getMuted',
+                    value: function getMuted(callback) {
+                        var self = this;
+                        if (!self.player) {
+                            callback(null);
+                            return;
+                        }
+
+                        if (self.type === 'youtube' && self.player.isMuted) {
+                            callback(self.player.isMuted());
+                        }
+
+                        if (self.type === 'vimeo' && self.player.getVolume) {
+                            self.player.getVolume().then(function (volume) {
+                                callback(!!volume);
+                            });
+                        }
+
+                        if (self.type === 'local') {
+                            callback(self.$video.muted);
+                        }
+                    }
+                }, {
+                    key: 'getImageURL',
+                    value: function getImageURL(callback) {
+                        var self = this;
+
+                        if (self.videoImage) {
+                            callback(self.videoImage);
+                            return;
+                        }
+
+                        if (self.type === 'youtube') {
+                            var availableSizes = ['maxresdefault', 'sddefault', 'hqdefault', '0'];
+                            var step = 0;
+
+                            var tempImg = new Image();
+                            tempImg.onload = function () {
+                                // if no thumbnail, youtube add their own image with width = 120px
+                                if ((this.naturalWidth || this.width) !== 120 || step === availableSizes.length - 1) {
+                                    // ok
+                                    self.videoImage = 'https://img.youtube.com/vi/' + self.videoID + '/' + availableSizes[step] + '.jpg';
+                                    callback(self.videoImage);
+                                } else {
+                                    // try another size
+                                    step++;
+                                    this.src = 'https://img.youtube.com/vi/' + self.videoID + '/' + availableSizes[step] + '.jpg';
+                                }
+                            };
+                            tempImg.src = 'https://img.youtube.com/vi/' + self.videoID + '/' + availableSizes[step] + '.jpg';
+                        }
+
+                        if (self.type === 'vimeo') {
+                            var request = new XMLHttpRequest();
+                            request.open('GET', 'https://vimeo.com/api/v2/video/' + self.videoID + '.json', true);
+                            request.onreadystatechange = function () {
+                                if (this.readyState === 4) {
+                                    if (this.status >= 200 && this.status < 400) {
+                                        // Success!
+                                        var response = JSON.parse(this.responseText);
+                                        self.videoImage = response[0].thumbnail_large;
+                                        callback(self.videoImage);
+                                    } else {
+                                        // Error :(
+                                    }
+                                }
+                            };
+                            request.send();
+                            request = null;
+                        }
+                    }
+
+                    // fallback to the old version.
+
+                }, {
+                    key: 'getIframe',
+                    value: function getIframe(callback) {
+                        this.getVideo(callback);
+                    }
+                }, {
+                    key: 'getVideo',
+                    value: function getVideo(callback) {
+                        var self = this;
+
+                        // return generated video block
+                        if (self.$video) {
+                            callback(self.$video);
+                            return;
+                        }
+
+                        // generate new video block
+                        self.onAPIready(function () {
+                            var hiddenDiv = void 0;
+                            if (!self.$video) {
+                                hiddenDiv = document.createElement('div');
+                                hiddenDiv.style.display = 'none';
+                            }
+
+                            // Youtube
+                            if (self.type === 'youtube') {
+                                self.playerOptions = {};
+                                self.playerOptions.videoId = self.videoID;
+                                self.playerOptions.playerVars = {
+                                    autohide: 1,
+                                    rel: 0,
+                                    autoplay: 0,
+                                    // autoplay enable on mobile devices
+                                    playsinline: 1
+                                };
+
+                                // hide controls
+                                if (!self.options.showContols) {
+                                    self.playerOptions.playerVars.iv_load_policy = 3;
+                                    self.playerOptions.playerVars.modestbranding = 1;
+                                    self.playerOptions.playerVars.controls = 0;
+                                    self.playerOptions.playerVars.showinfo = 0;
+                                    self.playerOptions.playerVars.disablekb = 1;
+                                }
+
+                                // events
+                                var ytStarted = void 0;
+                                var ytProgressInterval = void 0;
+                                self.playerOptions.events = {
+                                    onReady: function onReady(e) {
+                                        // mute
+                                        if (self.options.mute) {
+                                            e.target.mute();
+                                        } else if (self.options.volume) {
+                                            e.target.setVolume(self.options.volume);
+                                        }
+
+                                        // autoplay
+                                        if (self.options.autoplay) {
+                                            self.play(self.options.startTime);
+                                        }
+                                        self.fire('ready', e);
+
+                                        // volumechange
+                                        setInterval(function () {
+                                            self.getVolume(function (volume) {
+                                                if (self.options.volume !== volume) {
+                                                    self.options.volume = volume;
+                                                    self.fire('volumechange', e);
+                                                }
+                                            });
+                                        }, 150);
+                                    },
+                                    onStateChange: function onStateChange(e) {
+                                        // loop
+                                        if (self.options.loop && e.data === YT.PlayerState.ENDED) {
+                                            self.play(self.options.startTime);
+                                        }
+                                        if (!ytStarted && e.data === YT.PlayerState.PLAYING) {
+                                            ytStarted = 1;
+                                            self.fire('started', e);
+                                        }
+                                        if (e.data === YT.PlayerState.PLAYING) {
+                                            self.fire('play', e);
+                                        }
+                                        if (e.data === YT.PlayerState.PAUSED) {
+                                            self.fire('pause', e);
+                                        }
+                                        if (e.data === YT.PlayerState.ENDED) {
+                                            self.fire('ended', e);
+                                        }
+
+                                        // progress check
+                                        if (e.data === YT.PlayerState.PLAYING) {
+                                            ytProgressInterval = setInterval(function () {
+                                                self.fire('timeupdate', e);
+
+                                                // check for end of video and play again or stop
+                                                if (self.options.endTime && self.player.getCurrentTime() >= self.options.endTime) {
+                                                    if (self.options.loop) {
+                                                        self.play(self.options.startTime);
+                                                    } else {
+                                                        self.pause();
+                                                    }
+                                                }
+                                            }, 150);
+                                        } else {
+                                            clearInterval(ytProgressInterval);
+                                        }
+                                    }
+                                };
+
+                                var firstInit = !self.$video;
+                                if (firstInit) {
+                                    var div = document.createElement('div');
+                                    div.setAttribute('id', self.playerID);
+                                    hiddenDiv.appendChild(div);
+                                    document.body.appendChild(hiddenDiv);
+                                }
+                                self.player = self.player || new window.YT.Player(self.playerID, self.playerOptions);
+                                if (firstInit) {
+                                    self.$video = document.getElementById(self.playerID);
+
+                                    // get video width and height
+                                    self.videoWidth = parseInt(self.$video.getAttribute('width'), 10) || 1280;
+                                    self.videoHeight = parseInt(self.$video.getAttribute('height'), 10) || 720;
+                                }
+                            }
+
+                            // Vimeo
+                            if (self.type === 'vimeo') {
+                                self.playerOptions = '';
+
+                                self.playerOptions += 'player_id=' + self.playerID;
+                                self.playerOptions += '&autopause=0';
+                                self.playerOptions += '&transparent=0';
+
+                                // hide controls
+                                if (!self.options.showContols) {
+                                    self.playerOptions += '&badge=0&byline=0&portrait=0&title=0';
+                                }
+
+                                // autoplay
+                                self.playerOptions += '&autoplay=' + (self.options.autoplay ? '1' : '0');
+
+                                // loop
+                                self.playerOptions += '&loop=' + (self.options.loop ? 1 : 0);
+
+                                if (!self.$video) {
+                                    self.$video = document.createElement('iframe');
+                                    self.$video.setAttribute('id', self.playerID);
+                                    self.$video.setAttribute('src', 'https://player.vimeo.com/video/' + self.videoID + '?' + self.playerOptions);
+                                    self.$video.setAttribute('frameborder', '0');
+                                    hiddenDiv.appendChild(self.$video);
+                                    document.body.appendChild(hiddenDiv);
+                                }
+
+                                self.player = self.player || new Vimeo.Player(self.$video);
+
+                                // get video width and height
+                                self.player.getVideoWidth().then(function (width) {
+                                    self.videoWidth = width || 1280;
+                                });
+                                self.player.getVideoHeight().then(function (height) {
+                                    self.videoHeight = height || 720;
+                                });
+
+                                // set current time for autoplay
+                                if (self.options.startTime && self.options.autoplay) {
+                                    self.player.setCurrentTime(self.options.startTime);
+                                }
+
+                                // mute
+                                if (self.options.mute) {
+                                    self.player.setVolume(0);
+                                } else if (self.options.volume) {
+                                    self.player.setVolume(self.options.volume);
+                                }
+
+                                var vmStarted = void 0;
+                                self.player.on('timeupdate', function (e) {
+                                    if (!vmStarted) {
+                                        self.fire('started', e);
+                                        vmStarted = 1;
+                                    }
+
+                                    self.fire('timeupdate', e);
+
+                                    // check for end of video and play again or stop
+                                    if (self.options.endTime) {
+                                        if (self.options.endTime && e.seconds >= self.options.endTime) {
+                                            if (self.options.loop) {
+                                                self.play(self.options.startTime);
+                                            } else {
+                                                self.pause();
+                                            }
+                                        }
+                                    }
+                                });
+                                self.player.on('play', function (e) {
+                                    self.fire('play', e);
+
+                                    // check for the start time and start with it
+                                    if (self.options.startTime && e.seconds === 0) {
+                                        self.play(self.options.startTime);
+                                    }
+                                });
+                                self.player.on('pause', function (e) {
+                                    self.fire('pause', e);
+                                });
+                                self.player.on('ended', function (e) {
+                                    self.fire('ended', e);
+                                });
+                                self.player.on('loaded', function (e) {
+                                    self.fire('ready', e);
+                                });
+                                self.player.on('volumechange', function (e) {
+                                    self.fire('volumechange', e);
+                                });
+                            }
+
+                            // Local
+                            function addSourceToLocal(element, src, type) {
+                                var source = document.createElement('source');
+                                source.src = src;
+                                source.type = type;
+                                element.appendChild(source);
+                            }
+                            if (self.type === 'local') {
+                                if (!self.$video) {
+                                    self.$video = document.createElement('video');
+
+                                    // mute
+                                    if (self.options.mute) {
+                                        self.$video.muted = true;
+                                    } else if (self.$video.volume) {
+                                        self.$video.volume = self.options.volume / 100;
+                                    }
+
+                                    // loop
+                                    if (self.options.loop) {
+                                        self.$video.loop = true;
+                                    }
+
+                                    // autoplay enable on mobile devices
+                                    self.$video.setAttribute('playsinline', '');
+                                    self.$video.setAttribute('webkit-playsinline', '');
+
+                                    self.$video.setAttribute('id', self.playerID);
+                                    hiddenDiv.appendChild(self.$video);
+                                    document.body.appendChild(hiddenDiv);
+
+                                    Object.keys(self.videoID).forEach(function (key) {
+                                        addSourceToLocal(self.$video, self.videoID[key], 'video/' + key);
+                                    });
+                                }
+
+                                self.player = self.player || self.$video;
+
+                                var locStarted = void 0;
+                                self.player.addEventListener('playing', function (e) {
+                                    if (!locStarted) {
+                                        self.fire('started', e);
+                                    }
+                                    locStarted = 1;
+                                });
+                                self.player.addEventListener('timeupdate', function (e) {
+                                    self.fire('timeupdate', e);
+
+                                    // check for end of video and play again or stop
+                                    if (self.options.endTime) {
+                                        if (self.options.endTime && this.currentTime >= self.options.endTime) {
+                                            if (self.options.loop) {
+                                                self.play(self.options.startTime);
+                                            } else {
+                                                self.pause();
+                                            }
+                                        }
+                                    }
+                                });
+                                self.player.addEventListener('play', function (e) {
+                                    self.fire('play', e);
+                                });
+                                self.player.addEventListener('pause', function (e) {
+                                    self.fire('pause', e);
+                                });
+                                self.player.addEventListener('ended', function (e) {
+                                    self.fire('ended', e);
+                                });
+                                self.player.addEventListener('loadedmetadata', function () {
+                                    // get video width and height
+                                    self.videoWidth = this.videoWidth || 1280;
+                                    self.videoHeight = this.videoHeight || 720;
+
+                                    self.fire('ready');
+
+                                    // autoplay
+                                    if (self.options.autoplay) {
+                                        self.play(self.options.startTime);
+                                    }
+                                });
+                                self.player.addEventListener('volumechange', function (e) {
+                                    self.getVolume(function (volume) {
+                                        self.options.volume = volume;
+                                    });
+                                    self.fire('volumechange', e);
+                                });
+                            }
+
+                            callback(self.$video);
+                        });
+                    }
+                }, {
+                    key: 'init',
+                    value: function init() {
+                        var self = this;
+
+                        self.playerID = 'VideoWorker-' + self.ID;
+                    }
+                }, {
+                    key: 'loadAPI',
+                    value: function loadAPI() {
+                        var self = this;
+
+                        if (YoutubeAPIadded && VimeoAPIadded) {
+                            return;
+                        }
+
+                        var src = '';
+
+                        // load Youtube API
+                        if (self.type === 'youtube' && !YoutubeAPIadded) {
+                            YoutubeAPIadded = 1;
+                            src = 'https://www.youtube.com/iframe_api';
+                        }
+
+                        // load Vimeo API
+                        if (self.type === 'vimeo' && !VimeoAPIadded) {
+                            VimeoAPIadded = 1;
+                            src = 'https://player.vimeo.com/api/player.js';
+                        }
+
+                        if (!src) {
+                            return;
+                        }
+
+                        // add script in head section
+                        var tag = document.createElement('script');
+                        var head = document.getElementsByTagName('head')[0];
+                        tag.src = src;
+
+                        head.appendChild(tag);
+
+                        head = null;
+                        tag = null;
+                    }
+                }, {
+                    key: 'onAPIready',
+                    value: function onAPIready(callback) {
+                        var self = this;
+
+                        // Youtube
+                        if (self.type === 'youtube') {
+                            // Listen for global YT player callback
+                            if ((typeof YT === 'undefined' || YT.loaded === 0) && !loadingYoutubePlayer) {
+                                // Prevents Ready event from being called twice
+                                loadingYoutubePlayer = 1;
+
+                                // Creates deferred so, other players know when to wait.
+                                window.onYouTubeIframeAPIReady = function () {
+                                    window.onYouTubeIframeAPIReady = null;
+                                    loadingYoutubeDefer.resolve('done');
+                                    callback();
+                                };
+                            } else if ((typeof YT === 'undefined' ? 'undefined' : _typeof(YT)) === 'object' && YT.loaded === 1) {
+                                callback();
+                            } else {
+                                loadingYoutubeDefer.done(function () {
+                                    callback();
+                                });
+                            }
+                        }
+
+                        // Vimeo
+                        if (self.type === 'vimeo') {
+                            if (typeof Vimeo === 'undefined' && !loadingVimeoPlayer) {
+                                loadingVimeoPlayer = 1;
+                                var vimeoInterval = setInterval(function () {
+                                    if (typeof Vimeo !== 'undefined') {
+                                        clearInterval(vimeoInterval);
+                                        loadingVimeoDefer.resolve('done');
+                                        callback();
+                                    }
+                                }, 20);
+                            } else if (typeof Vimeo !== 'undefined') {
+                                callback();
+                            } else {
+                                loadingVimeoDefer.done(function () {
+                                    callback();
+                                });
+                            }
+                        }
+
+                        // Local
+                        if (self.type === 'local') {
+                            callback();
+                        }
+                    }
+                }]);
+
+                return VideoWorker;
+            }();
+
+            exports.default = VideoWorker;
+
+            /***/
+}),
+/* 10 */
+/***/ (function (module, exports, __webpack_require__) {
+
+            "use strict";
+
+
+            Object.defineProperty(exports, "__esModule", {
+                value: true
+            });
+            exports.default = jarallaxVideo;
+
+            var _videoWorker = __webpack_require__(3);
+
+            var _videoWorker2 = _interopRequireDefault(_videoWorker);
+
+            var _global = __webpack_require__(0);
+
+            var _global2 = _interopRequireDefault(_global);
+
+            function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+            function jarallaxVideo() {
+                var jarallax = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _global2.default.jarallax;
+
+                if (typeof jarallax === 'undefined') {
+                    return;
+                }
+
+                var Jarallax = jarallax.constructor;
+
+                // append video after init Jarallax
+                var defInit = Jarallax.prototype.init;
+                Jarallax.prototype.init = function () {
+                    var self = this;
+
+                    defInit.apply(self);
+
+                    if (self.video && !self.options.disableVideo()) {
+                        self.video.getVideo(function (video) {
+                            var $parent = video.parentNode;
+                            self.css(video, {
+                                position: self.image.position,
+                                top: '0px',
+                                left: '0px',
+                                right: '0px',
+                                bottom: '0px',
+                                width: '100%',
+                                height: '100%',
+                                maxWidth: 'none',
+                                maxHeight: 'none',
+                                margin: 0,
+                                zIndex: -1
+                            });
+                            self.$video = video;
+                            self.image.$container.appendChild(video);
+
+                            // remove parent video element (created by VideoWorker)
+                            $parent.parentNode.removeChild($parent);
+                        });
+                    }
+                };
+
+                // cover video
+                var defCoverImage = Jarallax.prototype.coverImage;
+                Jarallax.prototype.coverImage = function () {
+                    var self = this;
+                    var imageData = defCoverImage.apply(self);
+                    var node = self.image.$item ? self.image.$item.nodeName : false;
+
+                    if (imageData && self.video && node && (node === 'IFRAME' || node === 'VIDEO')) {
+                        var h = imageData.image.height;
+                        var w = h * self.image.width / self.image.height;
+                        var ml = (imageData.container.width - w) / 2;
+                        var mt = imageData.image.marginTop;
+
+                        if (imageData.container.width > w) {
+                            w = imageData.container.width;
+                            h = w * self.image.height / self.image.width;
+                            ml = 0;
+                            mt += (imageData.image.height - h) / 2;
+                        }
+
+                        // add video height over than need to hide controls
+                        if (node === 'IFRAME') {
+                            h += 400;
+                            mt -= 200;
+                        }
+
+                        self.css(self.$video, {
+                            width: w + 'px',
+                            marginLeft: ml + 'px',
+                            height: h + 'px',
+                            marginTop: mt + 'px'
+                        });
+                    }
+
+                    return imageData;
+                };
+
+                // init video
+                var defInitImg = Jarallax.prototype.initImg;
+                Jarallax.prototype.initImg = function () {
+                    var self = this;
+                    var defaultResult = defInitImg.apply(self);
+
+                    if (!self.options.videoSrc) {
+                        self.options.videoSrc = self.$item.getAttribute('data-jarallax-video') || null;
+                    }
+
+                    if (self.options.videoSrc) {
+                        self.defaultInitImgResult = defaultResult;
+                        return true;
+                    }
+
+                    return defaultResult;
+                };
+
+                var defCanInitParallax = Jarallax.prototype.canInitParallax;
+                Jarallax.prototype.canInitParallax = function () {
+                    var self = this;
+                    var defaultResult = defCanInitParallax.apply(self);
+
+                    if (!self.options.videoSrc) {
+                        return defaultResult;
+                    }
+
+                    var video = new _videoWorker2.default(self.options.videoSrc, {
+                        autoplay: true,
+                        loop: true,
+                        showContols: false,
+                        startTime: self.options.videoStartTime || 0,
+                        endTime: self.options.videoEndTime || 0,
+                        mute: self.options.videoVolume ? 0 : 1,
+                        volume: self.options.videoVolume || 0
+                    });
+
+                    if (video.isValid()) {
+                        // if parallax will not be inited, we can add thumbnail on background.
+                        if (!defaultResult) {
+                            if (!self.defaultInitImgResult) {
+                                video.getImageURL(function (url) {
+                                    // save default user styles
+                                    var curStyle = self.$item.getAttribute('style');
+                                    if (curStyle) {
+                                        self.$item.setAttribute('data-jarallax-original-styles', curStyle);
+                                    }
+
+                                    // set new background
+                                    self.css(self.$item, {
+                                        'background-image': 'url("' + url + '")',
+                                        'background-position': 'center',
+                                        'background-size': 'cover'
+                                    });
+                                });
+                            }
+
+                            // init video
+                        } else {
+                            video.on('ready', function () {
+                                if (self.options.videoPlayOnlyVisible) {
+                                    var oldOnScroll = self.onScroll;
+                                    self.onScroll = function () {
+                                        oldOnScroll.apply(self);
+                                        if (self.isVisible()) {
+                                            video.play();
+                                        } else {
+                                            video.pause();
+                                        }
+                                    };
+                                } else {
+                                    video.play();
+                                }
+                            });
+
+                            video.on('started', function () {
+                                self.image.$default_item = self.image.$item;
+                                self.image.$item = self.$video;
+
+                                // set video width and height
+                                self.image.width = self.video.videoWidth || 1280;
+                                self.image.height = self.video.videoHeight || 720;
+                                self.options.imgWidth = self.image.width;
+                                self.options.imgHeight = self.image.height;
+                                self.coverImage();
+                                self.clipContainer();
+                                self.onScroll();
+
+                                // hide image
+                                if (self.image.$default_item) {
+                                    self.image.$default_item.style.display = 'none';
+                                }
+                            });
+
+                            self.video = video;
+
+                            // set image if not exists
+                            if (!self.defaultInitImgResult) {
+                                if (video.type !== 'local') {
+                                    video.getImageURL(function (url) {
+                                        self.image.src = url;
+                                        self.init();
+                                    });
+
+                                    return false;
+                                }
+
+                                // set empty image on local video if not defined
+                                self.image.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+                                return true;
+                            }
+                        }
+                    }
+
+                    return defaultResult;
+                };
+
+                // Destroy video parallax
+                var defDestroy = Jarallax.prototype.destroy;
+                Jarallax.prototype.destroy = function () {
+                    var self = this;
+
+                    if (self.image.$default_item) {
+                        self.image.$item = self.image.$default_item;
+                        delete self.image.$default_item;
+                    }
+
+                    defDestroy.apply(self);
+                };
+            }
+
+            /***/
+})
+/******/]);
 
 /**
  * Single Page Nav Plugin
@@ -20354,6 +21598,529 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
   xhr.send();
 
 };
+// SmoothScroll for websites v1.2.1
+// Licensed under the terms of the MIT license.
+
+// People involved
+//  - Balazs Galambosi (maintainer)
+//  - Michael Herf     (Pulse Algorithm)
+
+(function(){
+
+// Scroll Variables (tweakable)
+var defaultOptions = {
+
+    // Scrolling Core
+    frameRate        : 150, // [Hz]
+    animationTime    : 500, // [px]
+    stepSize         : 150, // [px]
+
+    // Pulse (less tweakable)
+    // ratio of "tail" to "acceleration"
+    pulseAlgorithm   : true,
+    pulseScale       : 6,
+    pulseNormalize   : 1,
+
+    // Acceleration
+    accelerationDelta : 20,  // 20
+    accelerationMax   : 1,   // 1
+
+    // Keyboard Settings
+    keyboardSupport   : true,  // option
+    arrowScroll       : 50,     // [px]
+
+    // Other
+    touchpadSupport   : true,
+    fixedBackground   : true,
+    excluded          : ""
+};
+
+var options = defaultOptions;
+
+
+// Other Variables
+var isExcluded = false;
+var isFrame = false;
+var direction = { x: 0, y: 0 };
+var initDone  = false;
+var root = document.documentElement;
+var activeElement;
+var observer;
+var deltaBuffer = [ 120, 120, 120 ];
+
+var key = { left: 37, up: 38, right: 39, down: 40, spacebar: 32,
+            pageup: 33, pagedown: 34, end: 35, home: 36 };
+
+
+/***********************************************
+ * SETTINGS
+ ***********************************************/
+
+var options = defaultOptions;
+
+
+/***********************************************
+ * INITIALIZE
+ ***********************************************/
+
+/**
+ * Tests if smooth scrolling is allowed. Shuts down everything if not.
+ */
+function initTest() {
+
+    var disableKeyboard = false;
+
+    // disable keyboard support if anything above requested it
+    if (disableKeyboard) {
+        removeEvent("keydown", keydown);
+    }
+
+    if (options.keyboardSupport && !disableKeyboard) {
+        addEvent("keydown", keydown);
+    }
+}
+
+/**
+ * Sets up scrolls array, determines if frames are involved.
+ */
+function init() {
+
+    if (!document.body) return;
+
+    var body = document.body;
+    var html = document.documentElement;
+    var windowHeight = window.innerHeight;
+    var scrollHeight = body.scrollHeight;
+
+    // check compat mode for root element
+    root = (document.compatMode.indexOf('CSS') >= 0) ? html : body;
+    activeElement = body;
+
+    initTest();
+    initDone = true;
+
+    // Checks if this script is running in a frame
+    if (top != self) {
+        isFrame = true;
+    }
+
+    /**
+     * This fixes a bug where the areas left and right to
+     * the content does not trigger the onmousewheel event
+     * on some pages. e.g.: html, body { height: 100% }
+     */
+    else if (scrollHeight > windowHeight &&
+            (body.offsetHeight <= windowHeight ||
+             html.offsetHeight <= windowHeight)) {
+
+        html.style.height = 'auto';
+        //setTimeout(refresh, 10);
+
+        // clearfix
+        if (root.offsetHeight <= windowHeight) {
+            var underlay = document.createElement("div");
+            underlay.style.clear = "both";
+            body.appendChild(underlay);
+        }
+    }
+
+    // disable fixed background
+    if (!options.fixedBackground && !isExcluded) {
+        body.style.backgroundAttachment = "scroll";
+        html.style.backgroundAttachment = "scroll";
+    }
+}
+
+
+/************************************************
+ * SCROLLING
+ ************************************************/
+
+var que = [];
+var pending = false;
+var lastScroll = +new Date;
+
+/**
+ * Pushes scroll actions to the scrolling queue.
+ */
+function scrollArray(elem, left, top, delay) {
+
+    delay || (delay = 1000);
+    directionCheck(left, top);
+
+    if (options.accelerationMax != 1) {
+        var now = +new Date;
+        var elapsed = now - lastScroll;
+        if (elapsed < options.accelerationDelta) {
+            var factor = (1 + (30 / elapsed)) / 2;
+            if (factor > 1) {
+                factor = Math.min(factor, options.accelerationMax);
+                left *= factor;
+                top  *= factor;
+            }
+        }
+        lastScroll = +new Date;
+    }
+
+    // push a scroll command
+    que.push({
+        x: left,
+        y: top,
+        lastX: (left < 0) ? 0.99 : -0.99,
+        lastY: (top  < 0) ? 0.99 : -0.99,
+        start: +new Date
+    });
+
+    // don't act if there's a pending queue
+    if (pending) {
+        return;
+    }
+
+    var scrollWindow = (elem === document.body);
+
+    var step = function (time) {
+
+        var now = +new Date;
+        var scrollX = 0;
+        var scrollY = 0;
+
+        for (var i = 0; i < que.length; i++) {
+
+            var item = que[i];
+            var elapsed  = now - item.start;
+            var finished = (elapsed >= options.animationTime);
+
+            // scroll position: [0, 1]
+            var position = (finished) ? 1 : elapsed / options.animationTime;
+
+            // easing [optional]
+            if (options.pulseAlgorithm) {
+                position = pulse(position);
+            }
+
+            // only need the difference
+            var x = (item.x * position - item.lastX) >> 0;
+            var y = (item.y * position - item.lastY) >> 0;
+
+            // add this to the total scrolling
+            scrollX += x;
+            scrollY += y;
+
+            // update last values
+            item.lastX += x;
+            item.lastY += y;
+
+            // delete and step back if it's over
+            if (finished) {
+                que.splice(i, 1); i--;
+            }
+        }
+
+        // scroll left and top
+        if (scrollWindow) {
+            window.scrollBy(scrollX, scrollY);
+        }
+        else {
+            if (scrollX) elem.scrollLeft += scrollX;
+            if (scrollY) elem.scrollTop  += scrollY;
+        }
+
+        // clean up if there's nothing left to do
+        if (!left && !top) {
+            que = [];
+        }
+
+        if (que.length) {
+            requestFrame(step, elem, (delay / options.frameRate + 1));
+        } else {
+            pending = false;
+        }
+    };
+
+    // start a new queue of actions
+    requestFrame(step, elem, 0);
+    pending = true;
+}
+
+
+/***********************************************
+ * EVENTS
+ ***********************************************/
+
+/**
+ * Mouse wheel handler.
+ * @param {Object} event
+ */
+function wheel(event) {
+
+    if (!initDone) {
+        init();
+    }
+
+    var target = event.target;
+    var overflowing = overflowingAncestor(target);
+
+    // use default if there's no overflowing
+    // element or default action is prevented
+    if (!overflowing || event.defaultPrevented ||
+        isNodeName(activeElement, "embed") ||
+       (isNodeName(target, "embed") && /\.pdf/i.test(target.src))) {
+        return true;
+    }
+
+    var deltaX = event.wheelDeltaX || 0;
+    var deltaY = event.wheelDeltaY || 0;
+
+    // use wheelDelta if deltaX/Y is not available
+    if (!deltaX && !deltaY) {
+        deltaY = event.wheelDelta || 0;
+    }
+
+    // check if it's a touchpad scroll that should be ignored
+    if (!options.touchpadSupport && isTouchpad(deltaY)) {
+        return true;
+    }
+
+    // scale by step size
+    // delta is 120 most of the time
+    // synaptics seems to send 1 sometimes
+    if (Math.abs(deltaX) > 1.2) {
+        deltaX *= options.stepSize / 120;
+    }
+    if (Math.abs(deltaY) > 1.2) {
+        deltaY *= options.stepSize / 120;
+    }
+
+    scrollArray(overflowing, -deltaX, -deltaY);
+    event.preventDefault();
+}
+
+/**
+ * Keydown event handler.
+ * @param {Object} event
+ */
+function keydown(event) {
+
+    var target   = event.target;
+    var modifier = event.ctrlKey || event.altKey || event.metaKey ||
+                  (event.shiftKey && event.keyCode !== key.spacebar);
+
+    // do nothing if user is editing text
+    // or using a modifier key (except shift)
+    // or in a dropdown
+    if ( /input|textarea|select|embed/i.test(target.nodeName) ||
+         target.isContentEditable ||
+         event.defaultPrevented   ||
+         modifier ) {
+      return true;
+    }
+    // spacebar should trigger button press
+    if (isNodeName(target, "button") &&
+        event.keyCode === key.spacebar) {
+      return true;
+    }
+
+    var shift, x = 0, y = 0;
+    var elem = overflowingAncestor(activeElement);
+    var clientHeight = elem.clientHeight;
+
+    if (elem == document.body) {
+        clientHeight = window.innerHeight;
+    }
+
+    switch (event.keyCode) {
+        case key.up:
+            y = -options.arrowScroll;
+            break;
+        case key.down:
+            y = options.arrowScroll;
+            break;
+        case key.spacebar: // (+ shift)
+            shift = event.shiftKey ? 1 : -1;
+            y = -shift * clientHeight * 0.9;
+            break;
+        case key.pageup:
+            y = -clientHeight * 0.9;
+            break;
+        case key.pagedown:
+            y = clientHeight * 0.9;
+            break;
+        case key.home:
+            y = -elem.scrollTop;
+            break;
+        case key.end:
+            var damt = elem.scrollHeight - elem.scrollTop - clientHeight;
+            y = (damt > 0) ? damt+10 : 0;
+            break;
+        case key.left:
+            x = -options.arrowScroll;
+            break;
+        case key.right:
+            x = options.arrowScroll;
+            break;
+        default:
+            return true; // a key we don't care about
+    }
+
+    scrollArray(elem, x, y);
+    event.preventDefault();
+}
+
+/**
+ * Mousedown event only for updating activeElement
+ */
+function mousedown(event) {
+    activeElement = event.target;
+}
+
+
+/***********************************************
+ * OVERFLOW
+ ***********************************************/
+
+var cache = {}; // cleared out every once in while
+setInterval(function () { cache = {}; }, 10 * 1000);
+
+var uniqueID = (function () {
+    var i = 0;
+    return function (el) {
+        return el.uniqueID || (el.uniqueID = i++);
+    };
+})();
+
+function setCache(elems, overflowing) {
+    for (var i = elems.length; i--;)
+        cache[uniqueID(elems[i])] = overflowing;
+    return overflowing;
+}
+
+function overflowingAncestor(el) {
+    var elems = [];
+    var rootScrollHeight = root.scrollHeight;
+    do {
+        var cached = cache[uniqueID(el)];
+        if (cached) {
+            return setCache(elems, cached);
+        }
+        elems.push(el);
+        if (rootScrollHeight === el.scrollHeight) {
+            if (!isFrame || root.clientHeight + 10 < rootScrollHeight) {
+                return setCache(elems, document.body); // scrolling root in WebKit
+            }
+        } else if (el.clientHeight + 10 < el.scrollHeight) {
+            overflow = getComputedStyle(el, "").getPropertyValue("overflow-y");
+            if (overflow === "scroll" || overflow === "auto") {
+                return setCache(elems, el);
+            }
+        }
+    } while (el = el.parentNode);
+}
+
+
+/***********************************************
+ * HELPERS
+ ***********************************************/
+
+function addEvent(type, fn, bubble) {
+    window.addEventListener(type, fn, (bubble||false));
+}
+
+function removeEvent(type, fn, bubble) {
+    window.removeEventListener(type, fn, (bubble||false));
+}
+
+function isNodeName(el, tag) {
+    return (el.nodeName||"").toLowerCase() === tag.toLowerCase();
+}
+
+function directionCheck(x, y) {
+    x = (x > 0) ? 1 : -1;
+    y = (y > 0) ? 1 : -1;
+    if (direction.x !== x || direction.y !== y) {
+        direction.x = x;
+        direction.y = y;
+        que = [];
+        lastScroll = 0;
+    }
+}
+
+var deltaBufferTimer;
+
+function isTouchpad(deltaY) {
+    if (!deltaY) return;
+    deltaY = Math.abs(deltaY)
+    deltaBuffer.push(deltaY);
+    deltaBuffer.shift();
+    clearTimeout(deltaBufferTimer);
+
+    var allEquals    = (deltaBuffer[0] == deltaBuffer[1] &&
+                        deltaBuffer[1] == deltaBuffer[2]);
+    var allDivisable = (isDivisible(deltaBuffer[0], 120) &&
+                        isDivisible(deltaBuffer[1], 120) &&
+                        isDivisible(deltaBuffer[2], 120));
+    return !(allEquals || allDivisable);
+}
+
+function isDivisible(n, divisor) {
+    return (Math.floor(n / divisor) == n / divisor);
+}
+
+var requestFrame = (function () {
+      return  window.requestAnimationFrame       ||
+              window.webkitRequestAnimationFrame ||
+              function (callback, element, delay) {
+                  window.setTimeout(callback, delay || (1000/60));
+              };
+})();
+
+
+/***********************************************
+ * PULSE
+ ***********************************************/
+
+/**
+ * Viscous fluid with a pulse for part and decay for the rest.
+ * - Applies a fixed force over an interval (a damped acceleration), and
+ * - Lets the exponential bleed away the velocity over a longer interval
+ * - Michael Herf, http://stereopsis.com/stopping/
+ */
+function pulse_(x) {
+    var val, start, expx;
+    // test
+    x = x * options.pulseScale;
+    if (x < 1) { // acceleartion
+        val = x - (1 - Math.exp(-x));
+    } else {     // tail
+        // the previous animation ended here:
+        start = Math.exp(-1);
+        // simple viscous drag
+        x -= 1;
+        expx = 1 - Math.exp(-x);
+        val = start + (expx * (1 - start));
+    }
+    return val * options.pulseNormalize;
+}
+
+function pulse(x) {
+    if (x >= 1) return 1;
+    if (x <= 0) return 0;
+
+    if (options.pulseNormalize == 1) {
+        options.pulseNormalize /= pulse_(1);
+    }
+    return pulse_(x);
+}
+
+var isChrome = /chrome/i.test(window.navigator.userAgent);
+var isMouseWheelSupported = 'onmousewheel' in document;
+
+if (isMouseWheelSupported && isChrome) {
+    addEvent("mousedown", mousedown);
+    addEvent("mousewheel", wheel);
+    addEvent("load", init);
+};
+
+})();
 /*!
 *	Bootstrap submenu fix
 *	Version: 1.1
@@ -20419,13 +22186,18 @@ window.particlesJS.load = function(tag_id, path_config_json, callback){
 				});
 			}
 
-			if ( (width > navBreakpoint) && (mobileTest !== true) ) {
-				menuItem.children('.sub-menu, .mega-menu').each(function() {
+			if ( (width > navBreakpoint) ) {
+                menuItem.children('.sub-menu, .mega-menu').each(function () {
 					var a = $(this).offset();
 					var b = $(this).width() + a.left;
 					var c = width - (b + 30);
+                    var d = (width - $(this).width()) / 2;
+                    var e = width - (b + d);
 
-					if ( b > width ) {
+                    if ($(this).hasClass('menu-center')) {
+                        $(this).css('margin-left', e);
+                    }
+                    else if ( b > width ) {
 						$(this).css('margin-left', c);
 					} else {
 						$(this).css('margin-left', '0');
