@@ -1,0 +1,78 @@
+/* Footer Section */
+.footer {
+ padding: 0 60px !important;
+}
+
+.footer .widget {
+ margin: 30px 0 10px;
+}
+
+.widget-title {
+ border-color: #0055A2 !important;
+}
+
+.widget ul ul {
+ margin-top: 10px;
+ margin-left: 10px;
+}
+
+.widget ul ul li {
+ margin-bottom: 0;
+ border-bottom: none;
+}
+
+.widget ul li {
+ border: none;
+ margin: inherit;
+ padding: inherit;
+}
+
+.footer-menu-item i.fa-plus, .footer-menu-item i.fa-minus, .footer-menu-item i.fa-caret-right {
+ color: #0055A2;
+ display: inline-block;
+ font-size: 10px;
+ font-weight: bold;
+ margin-right: 8px;
+ cursor: pointer;
+}
+
+.footer-menu-item i.fa-caret-right {
+ color: #0055A2;
+ display: inline-block;
+ font-size: 15px;
+ font-weight: bold;
+ margin-right: 8px;
+}
+
+.subMenu-items {
+ list-style-type: disc !important;
+ margin-left: 18px !important;
+ margin-top: 0px !important;
+ margin-bottom: 0px !important;
+}
+
+.subWhiteText {
+ color: #fff;
+ font-weight: bold;
+}
+
+.sideInfoParent {
+ align-items: stretch;
+}
+
+.w-225 {
+ width: 225px !important;
+}
+
+.widget h5 a {
+ color: #fff;
+}
+
+.footer_email {
+ word-break: break-all;
+ display: inline-block;
+}
+
+.footer_grey {
+ color: #777;
+}
