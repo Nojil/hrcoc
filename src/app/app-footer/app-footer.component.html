@@ -21,63 +21,63 @@
         <div class="col-md-4">
           <aside class="widget">
             <div class="widget-title">
-              <h5><a href="/family">Family</a></h5>
+              <h5><a routerLink="/family">Family</a></h5>
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsAdults, 'fa-plus':!showDetailsAdults}"
                   (click)="showDetailsAdults = ! showDetailsAdults"></i>
-                <a>For Adults</a>
+                <a routerLink="/family/adults">For Adults</a>
                 <ul class="subMenu-items" *ngIf="showDetailsAdults">
                   <li>
-                    <a>Weekly Bible Studies</a>
+                    <a routerLink="/family/adults/weeklyBibleStudies">Weekly Bible Studies</a>
                   </li>
                   <li>
-                    <a>Sunday Bible Study</a>
+                    <a routerLink="/family/adults/sundayBibleStudy">Sunday Bible Study</a>
                   </li>
                   <li>
-                    <a>Mens Group</a>
+                    <a routerLink="/family/adults/mensGroup">Mens Group</a>
                   </li>
                   <li>
-                    <a>Womans group</a>
+                    <a routerLink="/family/adults/womansGroup">Womans group</a>
                   </li>
                   <li>
-                    <a>Young Professionals</a>
+                    <a routerLink="">Young Professionals</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsKids, 'fa-plus':!showDetailsKids}"
                   (click)="showDetailsKids = ! showDetailsKids"></i>
-                <a>For Kids</a>
+                <a routerLink="/family/kids">For Kids</a>
                 <ul class="subMenu-items" *ngIf="showDetailsKids">
                   <li>
-                    <a>Vacation Bible Study</a>
+                    <a routerLink="/family/kids/vbs">Vacation Bible Study</a>
                   </li>
                   <li>
-                    <a>Sunday Bible Classes</a>
+                    <a routerLink="/family/kids/sundayBibleClass">Sunday Bible Classes</a>
                   </li>
                   <li>
-                    <a>Youth Group</a>
+                    <a routerLink="/family/kids/youthGroup">Youth Group</a>
                   </li>
                   <li>
-                    <a>Youth Outreach</a>
+                    <a routerLink="/family/kids/youthOutreach">Youth Outreach</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsEveryone, 'fa-plus':!showDetailsEveryone}"
                   (click)="showDetailsEveryone = ! showDetailsEveryone"></i>
-                <a>For Everyone</a>
+                <a routerLink="/family/everyone">For Everyone</a>
                 <ul class="subMenu-items" *ngIf="showDetailsEveryone">
                   <li>
-                    <a>Weekly Bible Studies</a>
+                    <a routerLink="/family/everyone/weeklyBibleStudies">Weekly Bible Studies</a>
                   </li>
                   <li>
-                    <a>Community Outreach</a>
+                    <a routerLink="/family/everyone/communityOutreach">Community Outreach</a>
                   </li>
                   <li>
-                    <a>Monthly Potluck</a>
+                    <a routerLink="/family/everyone/monthlyPotluck">Monthly Potluck</a>
                   </li>
                 </ul>
               </li>
@@ -87,48 +87,48 @@
         <div class="col-md-4">
           <aside class="widget">
             <div class="widget-title">
-              <h5><a href="/">Grow In Christ</a></h5>
+              <h5><a routerLink="/grow">Grow In Christ</a></h5>
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBaptism, 'fa-plus':!showDetailsBaptism}"
                   (click)="showDetailsBaptism = ! showDetailsBaptism"></i>
-                <a>Baptism</a>
+                <a routerLink="/grow/baptism">Baptism</a>
                 <ul class="subMenu-items" *ngIf="showDetailsBaptism">
                   <li>
-                    <a>How to be Saved</a>
+                    <a routerLink="/grow/baptism/howToBeSaved">How to be Saved</a>
                   </li>
                   <li>
-                    <a>Biblical Baptism</a>
+                    <a routerLink="/grow/baptism/biblicalBaptism">Biblical Baptism</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsCommunion, 'fa-plus':!showDetailsCommunion}"
                   (click)="showDetailsCommunion = ! showDetailsCommunion"></i>
-                <a>Communion</a>
+                <a routerLink="/grow/communion">Communion</a>
                 <ul class="subMenu-items" *ngIf="showDetailsCommunion">
                   <li>
-                    <a>Weekly Communion</a>
+                    <a routerLink="/grow/communion/weeklyCommunion">Weekly Communion</a>
                   </li>
                   <li>
-                    <a>Biblical Communion</a>
+                    <a routerLink="/grow/communion/biblicalCommunion">Biblical Communion</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsStudy, 'fa-plus':!showDetailsStudy}"
                   (click)="showDetailsStudy = ! showDetailsStudy"></i>
-                <a>Study</a>
+                <a routerLink="/grow/study">Study</a>
                 <ul class="subMenu-items" *ngIf="showDetailsStudy">
                   <li>
-                    <a>Weekly Bible Reading</a>
+                    <a routerLink="/grow/study/weeklyBibleReading">Weekly Bible Reading</a>
                   </li>
                   <li>
-                    <a>Yearly Bible Reading</a>
+                    <a routerLink="/grow/study/yearlyBibleReading">Yearly Bible Reading</a>
                   </li>
                   <li>
-                    <a>Sermon Follow-up</a>
+                    <a routerLink="/grow/study/sermonFollowUp">Sermon Follow-up</a>
                   </li>
                 </ul>
               </li>
@@ -138,51 +138,51 @@
         <div class="col-md-4">
           <aside class="widget">
             <div class="widget-title">
-              <h5><a href="/">World Impact</a></h5>
+              <h5><a href="/world">World Impact</a></h5>
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsLamb, 'fa-plus':!showDetailsLamb}"
                   (click)="showDetailsLamb = ! showDetailsLamb"></i>
-                <a>L.A.M.B</a>
+                <a routerLink="">L.A.M.B</a>
                 <ul class="subMenu-items" *ngIf="showDetailsLamb">
                   <li>
-                    <a>Newsletter</a>
+                    <a routerLink="/world/lamb/newsletter">Newsletter</a>
                   </li>
                   <li>
-                    <a>Donations</a>
+                    <a routerLink="/world/lamb/donations">Donations</a>
                   </li>
                   <li>
-                    <a>Impact</a>
+                    <a routerLink="/world/lamb/impact">Impact</a>
                   </li>
                   <li>
-                    <a>How to Help</a>
+                    <a routerLink="/world/lamb/howToHelp">How to Help</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsMissions, 'fa-plus':!showDetailsMissions}"
                   (click)="showDetailsMissions = ! showDetailsMissions"></i>
-                <a>Missions</a>
+                <a routerLink="/world/missions">Missions</a>
                 <ul class="subMenu-items" *ngIf="showDetailsMissions">
                   <li>
-                    <a>Equidor</a>
+                    <a routerLink="/world/missions/equidor">Equidor</a>
                   </li>
                   <li>
-                    <a>South America</a>
+                    <a routerLink="/world/missions/southAmerica">South America</a>
                   </li>
                   <li>
-                    <a>Local Missions</a>
+                    <a routerLink="/world/missions/localMissions">Local Missions</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsGiving, 'fa-plus':!showDetailsGiving}"
                   (click)="showDetailsGiving = ! showDetailsGiving"></i>
-                <a>Giving</a>
+                <a routerLink="/world/giving">Giving</a>
                 <ul class="subMenu-items" *ngIf="showDetailsGiving">
                   <li>
-                    <a>Biblical Giving</a>
+                    <a routerLink="/world/giving/biblicalGiving">Biblical Giving</a>
                   </li>
                 </ul>
               </li>
@@ -194,54 +194,54 @@
         <div class="col-md-4">
           <aside class="widget">
             <div class="widget-title">
-              <h5><a href="/">Who We Are</a></h5>
+              <h5><a href="/whoWeAre">Who We Are</a></h5>
             </div>
             <ul>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsElders, 'fa-plus':!showDetailsElders}"
                   (click)="showDetailsElders = ! showDetailsElders"></i>
-                <a>Elders</a>
+                <a routerLink="/whoWeAre/elders">Elders</a>
                 <ul class="subMenu-items" *ngIf="showDetailsElders">
                   <li>
-                    <a>Bob Brown</a>
+                    <a routerLink="/whoWeAre/elders/bobBrown">Bob Brown</a>
                   </li>
                   <li>
-                    <a>Bill Freemen</a>
+                    <a routerLink="/whoWeAre/elders/billFreemen">Bill Freemen</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsBelieve, 'fa-plus':!showDetailsBelieve}"
                   (click)="showDetailsBelieve = ! showDetailsBelieve"></i>
-                <a>We believe...</a>
+                <a routerLink="/whoWeAre/believe">We believe...</a>
                 <ul class="subMenu-items" *ngIf="showDetailsBelieve">
                   <li>
-                    <a>Who We Are</a>
+                    <a routerLink="/whoWeAre/believe/whoWeAre">Who We Are</a>
                   </li>
                   <li>
-                    <a>Statement of Faith</a>
+                    <a routerLink="/whoWeAre/believe/sof">Statement of Faith</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks" [ngClass]="{'fa-minus':showDetailsServices, 'fa-plus':!showDetailsServices}"
                   (click)="showDetailsServices = ! showDetailsServices"></i>
-                <a>Services</a>
+                <a routerLink="/whoWeAre/services">Services</a>
                 <ul class="subMenu-items" *ngIf="showDetailsServices">
                   <li>
-                    <a>Counseling</a>
+                    <a routerLink="/whoWeAre/services/counceling">Counseling</a>
                   </li>
                   <li>
-                    <a>Weddings</a>
+                    <a routerLink="/whoWeAre/services/weddings">Weddings</a>
                   </li>
                   <li>
-                    <a>Prayer</a>
+                    <a routerLink="/whoWeAre/services/prayer">Prayer</a>
                   </li>
                 </ul>
               </li>
               <li class="footer-menu-icon footer-menu-item">
                 <i class="fas showSubLinks fa-caret-right"></i>
-                <a>Contact Us</a>
+                <a routerLink="/contact">Contact Us</a>
               </li>
             </ul>
           </aside>

@@ -86,6 +86,9 @@ import { AppWeddingsComponent } from './whoWeAre/services/app-weddings/app-weddi
 import { AppSofComponent } from './whoWeAre/believe/app-sof/app-sof.component';
 import { AppWhoWeAreDetailsComponent } from './whoWeAre/believe/app-who-we-are-details/app-who-we-are-details.component';
 
+//contact
+import { ContactComponent } from './whoWeAre/contact/contact.component';
+
 const routes: Routes = [
   {
     path: '', component: AppHomeComponent
@@ -101,6 +104,9 @@ const routes: Routes = [
   },
   {
     path: 'whoWeAre', component: AppWhoWeAreComponent
+  },
+  {
+    path: 'contact', component: ContactComponent
   },
   {
     path: 'family/adults', component: AppAdultsComponent

@@ -62,6 +62,7 @@ import { AppWhoWeAreDetailsComponent } from './whoWeAre/believe/app-who-we-are-d
 import { AppCouncelingComponent } from './whoWeAre/services/app-counceling/app-counceling.component';
 import { AppWeddingsComponent } from './whoWeAre/services/app-weddings/app-weddings.component';
 import { AppPrayerComponent } from './whoWeAre/services/app-prayer/app-prayer.component';
+import { ContactComponent } from './whoWeAre/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { AppPrayerComponent } from './whoWeAre/services/app-prayer/app-prayer.co
     AppWhoWeAreDetailsComponent,
     AppCouncelingComponent,
     AppWeddingsComponent,
-    AppPrayerComponent
+    AppPrayerComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
